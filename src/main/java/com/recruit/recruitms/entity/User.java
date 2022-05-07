@@ -25,50 +25,25 @@ public class User implements Serializable {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(
-            name = "idUser",
-            updatable = false,
-            nullable = false
-    )
-    private UUID idUser;
+    @Column(updatable = false, nullable = false)
+    private UUID id;
 
-    @Column(
-            name = "name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
 
-    @Column(
-            name = "email",
-            nullable = false,
-            unique = true
-    )
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(
-            name = "username",
-            nullable = false,
-            unique = true
-    )
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(
-            name = "password",
-            nullable = false
-    )
+    @Column(nullable = false)
     private String password;
 
-    @Column(
-            name = "date_of_birth",
-            nullable = false
-    )
+    @Column(name = "date_of_birth",nullable = false)
     private LocalDate dob;
 
-    @Column(
-            name = "objectState",
-            nullable = false
-    )
+    @Column(nullable = false)
     private Enum.ObjectState objectState;
 
     public User(String name, String email, String username, String password, LocalDate dob, Enum.ObjectState objectState) {
