@@ -2,13 +2,15 @@ package com.recruit.recruitms.controller;
 
 import com.recruit.recruitms.entity.Response;
 import com.recruit.recruitms.entity.User;
-import com.recruit.recruitms.service.UserService;
+import com.recruit.recruitms.security.AuditorAware;
+import com.recruit.recruitms.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
@@ -76,6 +78,7 @@ public class UserController {
         );
     }
 
+    //@PostMapping("/{updater}")
     @PostMapping
     public ResponseEntity<Response> registerUser(@RequestBody User user){
         return ResponseEntity.ok(
@@ -89,6 +92,7 @@ public class UserController {
         );
     }
 
+    //@PutMapping("/{updater}")
     @PutMapping
     public ResponseEntity<Response> updateUser(@RequestBody User user){
         return ResponseEntity.ok(
@@ -100,7 +104,6 @@ public class UserController {
                         .statusCode(HttpStatus.OK.value())
                         .build()
         );
-
     }
 
     @DeleteMapping(path="{id}")

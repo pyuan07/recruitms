@@ -1,13 +1,13 @@
 package com.recruit.recruitms.entity;
 
+import com.recruit.recruitms.security.Auditable;
 import com.recruit.recruitms.enumeration.Enum;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -17,24 +17,29 @@ import java.util.UUID;
 @ToString
 
 @Entity
-@Table(name="User")
-public class User implements Serializable {
+@Table(
+        name="user",
+        uniqueConstraints = {
+                @UniqueConstraint(name="user_email_unique",columnNames = "email"),
+                @UniqueConstraint(name="user_username_unique",columnNames = "username")
+        }
+)
+//public class User extends Auditable<String> {
+public class User {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(updatable = false, nullable = false)
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
+    @Type(type = "uuid-char")
     private UUID id;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @Column(nullable = false)
@@ -54,4 +59,5 @@ public class User implements Serializable {
         this.dob = dob;
         this.objectState = objectState;
     }
+
 }

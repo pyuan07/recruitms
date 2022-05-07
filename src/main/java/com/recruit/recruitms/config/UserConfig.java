@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Date;
 
 @Configuration
 public class UserConfig {
@@ -21,7 +23,7 @@ public class UserConfig {
                     "admin@mail.com",
                     "admin",
                     "admin",
-                    LocalDate.of(2000, Month.AUGUST,10),
+                    LocalDate.of(2000,Month.AUGUST,10),
                     Enum.ObjectState.ACTIVE
             );
             

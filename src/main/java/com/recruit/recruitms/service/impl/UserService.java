@@ -1,19 +1,23 @@
-package com.recruit.recruitms.service;
+package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constant;
 import com.recruit.recruitms.entity.User;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.UserRepository;
+import com.recruit.recruitms.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 
 @Service
-public class UserService {
+public class UserService implements IService<User,UUID> {
 
     private final UserRepository repo;
 
@@ -26,6 +30,9 @@ public class UserService {
     public User create(User user) {
         if(repo.getByEmail(user.getEmail()).isPresent() || repo.getByUsername(user.getUsername()).isPresent())
             throw new ApiRequestException(Constant.EMAIL_EXIST);
+
+        user.setObjectState(Enum.ObjectState.ACTIVE);
+
         return repo.save(user);
     }
 
@@ -38,7 +45,7 @@ public class UserService {
     }
 
     public User getById(UUID id){
-        return repo.getById(id);
+        return repo.getUserById(id).orElseThrow(()-> new ApiRequestException(Constant.NOT_FOUND + " id: "+ id));
     }
 
     public User getByUsername(String username){
