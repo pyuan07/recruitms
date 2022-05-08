@@ -1,4 +1,4 @@
-package com.recruit.recruitms.entity;
+package com.recruit.recruitms.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

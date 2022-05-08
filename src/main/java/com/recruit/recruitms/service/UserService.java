@@ -1,4 +1,4 @@
-package com.recruit.recruitms.service.impl;
+package com.recruit.recruitms.service;
 
 import com.recruit.recruitms.constant.Constant;
 import com.recruit.recruitms.entity.User;

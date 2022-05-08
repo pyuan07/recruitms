@@ -7,6 +7,9 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -33,15 +36,20 @@ public class User {
     @Type(type = "uuid-char")
     private UUID id;
 
+    @NotBlank(message = "Name is required")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
 
+    @NotEmpty(message = "Email is required")
     @Column(nullable = false)
+    @Email
     private String email;
 
+    @NotBlank(message = "Username is required")
     @Column(nullable = false)
     private String username;
 
+    @NotBlank(message = "Password is required")
     @Column(nullable = false)
     private String password;
 
