@@ -1,4 +1,4 @@
-package com.recruit.recruitms.security;
+package com.recruit.recruitms.security.auditable;
 
 import java.util.Optional;
 

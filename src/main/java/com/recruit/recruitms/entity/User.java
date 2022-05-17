@@ -1,6 +1,5 @@
 package com.recruit.recruitms.entity;
 
-import com.recruit.recruitms.security.Auditable;
 import com.recruit.recruitms.enumeration.Enum;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -38,7 +37,7 @@ public class User {
 
     @NotBlank(message = "Name is required")
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String name;
+    private String fullName;
 
     @NotEmpty(message = "Email is required")
     @Column(nullable = false)
@@ -53,14 +52,14 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "date_of_birth",nullable = false)
+    @Column(name = "date_of_birth")
     private LocalDate dob;
 
     @Column(nullable = false)
-    private Enum.ObjectState objectState;
+        private Enum.ObjectState objectState;
 
-    public User(String name, String email, String username, String password, LocalDate dob, Enum.ObjectState objectState) {
-        this.name = name;
+    public User(String fullName, String email, String username, String password, LocalDate dob, Enum.ObjectState objectState) {
+        this.fullName = fullName;
         this.email = email;
         this.username = username;
         this.password = password;
@@ -68,4 +67,7 @@ public class User {
         this.objectState = objectState;
     }
 
+    public boolean isEnabled(){
+        return objectState == Enum.ObjectState.ACTIVE;
+    }
 }

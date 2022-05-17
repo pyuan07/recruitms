@@ -9,6 +9,7 @@ public class Enum {
     }
 
     public enum ObjectState {
+        CREATED,
         TERMINATED,
         ACTIVE,
         PENDING,
