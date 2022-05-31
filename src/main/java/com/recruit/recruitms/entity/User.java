@@ -1,6 +1,7 @@
 package com.recruit.recruitms.entity;
 
 import com.recruit.recruitms.enumeration.Enum;
+import com.recruit.recruitms.security.auditable.Auditable;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -26,8 +27,8 @@ import java.util.UUID;
                 @UniqueConstraint(name="user_username_unique",columnNames = "username")
         }
 )
-//public class User extends Auditable<String> {
-public class User {
+public class User extends Auditable<String> {
+//public class User {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -35,8 +36,7 @@ public class User {
     @Type(type = "uuid-char")
     private UUID id;
 
-    @NotBlank(message = "Name is required")
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String fullName;
 
     @NotEmpty(message = "Email is required")
@@ -52,18 +52,28 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Enum.Role roles;
+
     @Column(name = "date_of_birth")
     private LocalDate dob;
 
-    @Column(nullable = false)
-        private Enum.ObjectState objectState;
+    @Enumerated(EnumType.STRING)
+    private Enum.Gender gender;
 
-    public User(String fullName, String email, String username, String password, LocalDate dob, Enum.ObjectState objectState) {
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Enum.ObjectState objectState;
+
+    public User(String fullName, String email, String username, String password, Enum.Role role, LocalDate dob, Enum.Gender gender, Enum.ObjectState objectState) {
         this.fullName = fullName;
         this.email = email;
         this.username = username;
         this.password = password;
+        this.roles = role;
         this.dob = dob;
+        this.gender = gender;
         this.objectState = objectState;
     }
 

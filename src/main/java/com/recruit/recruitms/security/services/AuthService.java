@@ -13,6 +13,7 @@ import com.recruit.recruitms.repository.UserRepository;
 import com.recruit.recruitms.repository.VerificationTokenRepository;
 import com.recruit.recruitms.security.jwt.JwtProvider;
 import com.recruit.recruitms.service.impl.MailService;
+import com.recruit.recruitms.service.impl.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,22 +36,22 @@ import java.util.UUID;
 public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
-    private final RefreshTokenService refreshTokenService;
+    //private final RefreshTokenService refreshTokenService;
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
-        user.setFullName(registerRequest.getFullName());
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setPassword(registerRequest.getPassword());
         user.setObjectState(Enum.ObjectState.CREATED);
+        user.setRoles(Enum.Role.USER);
 
-        userRepository.save(user);
+        userService.create(user);
 
         String token = generateVerificationToken(user);
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
@@ -63,15 +64,14 @@ public class AuthService {
     public User getCurrentUser() {
         Jwt principal = (Jwt) SecurityContextHolder.
                 getContext().getAuthentication().getPrincipal();
-        return userRepository.findByUsername(principal.getSubject())
-                .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getSubject()));
+        return userService.getByUsername(principal.getSubject());
     }
 
     private void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new ApiRequestException("User not found with name - " + username));
+        User user = userService.getByUsername(username);
         user.setObjectState(Enum.ObjectState.ACTIVE);
-        userRepository.save(user);
+        userService.update(user);
     }
 
     private String generateVerificationToken(User user) {
@@ -90,28 +90,34 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
+        //Check Status
+        switch (userService.getByUsername(loginRequest.getUsername()).getObjectState()){
+            case FROZEN -> throw new ApiRequestException("The account have been frozen!");
+            case TERMINATED -> throw new ApiRequestException("The account have been terminated! Please check with admin!");
+            case CREATED -> throw new ApiRequestException("The account have not been activated yet! Please check your email!");
+        }
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
-                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
-                .username(loginRequest.getUsername())
+//                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+//                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .logonUser(userService.getByUsername(loginRequest.getUsername()))
                 .build();
     }
 
-    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
-        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
-        return AuthenticationResponse.builder()
-                .authenticationToken(token)
-                .refreshToken(refreshTokenRequest.getRefreshToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
-                .username(refreshTokenRequest.getUsername())
-                .build();
-    }
+//    public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+//        refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+//        String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+//        return AuthenticationResponse.builder()
+//                .authenticationToken(token)
+//                .refreshToken(refreshTokenRequest.getRefreshToken())
+//                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+//                .logonUser(userService.getByUsername(refreshTokenRequest.getUsername()))
+//                .build();
+//    }
 
     public boolean isLoggedIn() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

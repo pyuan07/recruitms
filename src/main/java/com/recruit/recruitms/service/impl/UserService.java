@@ -7,29 +7,37 @@ import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.UserRepository;
 import com.recruit.recruitms.service.IService;
 import com.recruit.recruitms.service.IUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 @Service
+@AllArgsConstructor
 public class UserService implements IService<User,UUID>, IUserService {
 
     private final UserRepository repo;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository repo) {
-        this.repo = repo;
-    }
 
 
     public User create(User user) {
-        if(repo.findByEmail(user.getEmail()).isPresent() || repo.findByUsername(user.getUsername()).isPresent())
+        if(repo.findByEmail(user.getEmail()).isPresent())
             throw new ApiRequestException(Constants.EMAIL_EXIST);
 
-        user.setObjectState(Enum.ObjectState.CREATED);
+        if(repo.findByUsername(user.getUsername()).isPresent())
+            throw new ApiRequestException(Constants.USERNAME_EXIST);
+
+        //Encode Password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return repo.save(user);
     }
@@ -51,8 +59,9 @@ public class UserService implements IService<User,UUID>, IUserService {
     }
 
     public boolean delete(UUID id) {
-        if(! repo.existsById(id)) throw new ApiRequestException(Constants.NOT_FOUND + " id: "+id);
-        repo.deleteById(id);
+        //if(! repo.existsById(id)) throw new ApiRequestException(Constants.NOT_FOUND + " id: "+id);
+        //repo.deleteById(id);
+        this.terminate(id);
         return true;
     }
 

@@ -2,10 +2,15 @@ package com.recruit.recruitms.enumeration;
 
 public class Enum {
 
-    public enum Level {
-        LOW,
-        MEDIUM,
-        HIGH
+    public enum Role {
+        ADMIN,
+        STAFF,
+        USER
+    }
+
+    public enum Gender {
+        MALE,
+        FEMALE
     }
 
     public enum ObjectState {

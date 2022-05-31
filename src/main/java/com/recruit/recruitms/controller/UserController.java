@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static java.time.LocalDateTime.now;
-
 @RestController
 @RequestMapping(path="api/v1/user")
+@CrossOrigin
 public class UserController {
 
     private final UserService _userService;
@@ -44,7 +43,7 @@ public class UserController {
 
     //@PostMapping("/{updater}")
     @PostMapping
-    public ResponseEntity<User> registerUser(@RequestBody User user){
+    public ResponseEntity<User> createUser(@RequestBody User user){
         return ResponseEntity.ok(_userService.create(user));
     }
 

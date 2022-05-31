@@ -5,8 +5,8 @@ import com.recruit.recruitms.dto.request.RefreshTokenRequest;
 import com.recruit.recruitms.dto.request.RegisterRequest;
 import com.recruit.recruitms.dto.response.AuthenticationResponse;
 import com.recruit.recruitms.security.services.AuthService;
-import com.recruit.recruitms.security.services.RefreshTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +17,16 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor
+@CrossOrigin
 public class AuthController {
 
     private final AuthService authService;
-    private final RefreshTokenService refreshTokenService;
+    //private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> signup(@RequestBody RegisterRequest registerRequest) {
         authService.signup(registerRequest);
-        return new ResponseEntity<>("User Registration Successful",
-                OK);
+        return new ResponseEntity<>(OK);
     }
 
     @GetMapping("accountVerification/{token}")
@@ -39,15 +39,15 @@ public class AuthController {
     public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         return authService.login(loginRequest);
     }
-
-    @PostMapping("/refresh/token")
-    public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return authService.refreshToken(refreshTokenRequest);
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
-        return ResponseEntity.status(OK).body("Refresh Token Deleted Successfully!!");
-    }
+//
+//    @PostMapping("/refresh/token")
+//    public AuthenticationResponse refreshTokens(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+//        return authService.refreshToken(refreshTokenRequest);
+//    }
+//
+//    @PostMapping("/logout")
+//    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+//        refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
+//        return ResponseEntity.status(OK).body("Refresh Token Deleted Successfully!!");
+//    }
 }

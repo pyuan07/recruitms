@@ -29,8 +29,10 @@ public class UserConfig {
                     "admin",
                     "admin@mail.com",
                     "admin",
-                    passwordEncoder.encode("admin"),
+                    passwordEncoder.encode("admin123"),
+                    Enum.Role.ADMIN,
                     LocalDate.of(2000,Month.AUGUST,10),
+                    Enum.Gender.MALE,
                     Enum.ObjectState.ACTIVE
             );
             

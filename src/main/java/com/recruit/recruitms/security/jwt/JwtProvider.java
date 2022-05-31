@@ -16,8 +16,9 @@ import java.time.Instant;
 public class JwtProvider {
 
     private final JwtEncoder jwtEncoder;
-    @Value("${jwt.expiration.time}")
-    private Long jwtExpirationInMillis;
+
+//    @Value("${jwt.expiration.time}")
+//    private Long jwtExpirationInMillis;
 
     public String generateToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
@@ -28,7 +29,7 @@ public class JwtProvider {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusMillis(jwtExpirationInMillis))
+                //.expiresAt(Instant.now().plusMillis(jwtExpirationInMillis))
                 .subject(username)
                 .claim("scope", "ROLE_USER")
                 .build();
@@ -36,7 +37,7 @@ public class JwtProvider {
         return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public Long getJwtExpirationInMillis() {
-        return jwtExpirationInMillis;
-    }
+//    public Long getJwtExpirationInMillis() {
+//        return jwtExpirationInMillis;
+//    }
 }
