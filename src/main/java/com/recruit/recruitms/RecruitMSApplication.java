@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableAsync
 @Import(SwaggerConfig.class)
-@EnableJpaAuditing
 public class RecruitMSApplication {
 
     public static void main(String[] args) {
