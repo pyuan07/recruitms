@@ -46,8 +46,9 @@ public class UserService implements IService<User,UUID>, IUserService {
         return repo.findAll();
     }
 
-    public List<User> getActive(){
-        return repo.findAll().stream().filter(x->x.getObjectState() == Enum.ObjectState.ACTIVE).toList();
+    @Override
+    public List<User> getByObjectState(Enum.ObjectState objectState) {
+        return repo.findAll().stream().filter(x->x.getObjectState() == objectState).toList();
     }
 
     public User getById(UUID id){

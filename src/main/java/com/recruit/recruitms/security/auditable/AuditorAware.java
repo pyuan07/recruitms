@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -21,9 +22,14 @@ public class AuditorAware implements org.springframework.data.domain.AuditorAwar
             return Optional.empty();
         }
         else{
-            Jwt principal = (Jwt) SecurityContextHolder.
-                    getContext().getAuthentication().getPrincipal();
-            return Optional.ofNullable(principal.getSubject());
+            try{
+                Jwt principal = (Jwt) SecurityContextHolder.
+                        getContext().getAuthentication().getPrincipal();
+                return Optional.ofNullable(principal.getSubject());
+            }catch(Exception ex){
+                return Optional.empty();
+            }
+
         }
 
         //return Optional.of("PYUAN07");

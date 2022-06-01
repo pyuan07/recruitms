@@ -1,6 +1,7 @@
 package com.recruit.recruitms.controller;
 
 import com.recruit.recruitms.entity.User;
+import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,9 @@ public class UserController {
         return ResponseEntity.ok(_userService.getAll());
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<User>> getActiveUsers(){
-        return ResponseEntity.ok(_userService.getActive());
+    @GetMapping("/objectState/{objectState}")
+    public ResponseEntity<List<User>> getUsersByObjectState(@PathVariable String objectState){
+        return ResponseEntity.ok(_userService.getByObjectState(Enum.ObjectState.valueOf(objectState)));
     }
 
     @GetMapping(path="/id/{id}")
