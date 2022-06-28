@@ -37,6 +37,9 @@ public class Resume extends Auditable<String> {
     )
     private Set<Tag> tag;
 
+    @OneToOne
+    private Country country;
+
     @Column
     private Integer totalExperienceYear;
 

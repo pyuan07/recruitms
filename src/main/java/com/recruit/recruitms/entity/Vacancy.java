@@ -33,8 +33,20 @@ public class Vacancy extends Auditable<String> {
     @Column(nullable = false)
     private String description;
 
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name="vacancy_tag",
+            joinColumns = @JoinColumn(name="vacancyId"),
+            inverseJoinColumns = @JoinColumn(name="tagId")
+    )
+    private Set<Tag> tag;
+
     @OneToOne
     private Category category;
+
+    @OneToOne
+    private Country country;
 
     private Integer numberOfOpening;
 

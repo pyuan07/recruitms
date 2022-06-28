@@ -32,6 +32,7 @@ public class Enum {
     }
 
     public enum TagType {
-        Resume
+        Resume,
+        Vacancy
     }
 }

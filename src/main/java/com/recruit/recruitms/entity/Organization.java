@@ -40,6 +40,10 @@ public class Organization extends Auditable<String> {
     @Column(nullable = false)
     private String address;
 
+    @OneToOne
+    @JoinColumn(name = "country_iso")
+    private Country country;
+
     @NotEmpty(message = "Contact Email is required")
     @Column(nullable = false, unique = true)
     private String email;
