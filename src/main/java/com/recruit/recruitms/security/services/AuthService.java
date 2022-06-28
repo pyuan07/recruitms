@@ -1,7 +1,6 @@
 package com.recruit.recruitms.security.services;
 
 import com.recruit.recruitms.dto.request.LoginRequest;
-import com.recruit.recruitms.dto.request.RefreshTokenRequest;
 import com.recruit.recruitms.dto.request.RegisterRequest;
 import com.recruit.recruitms.dto.response.AuthenticationResponse;
 import com.recruit.recruitms.entity.NotificationEmail;
@@ -9,7 +8,6 @@ import com.recruit.recruitms.entity.User;
 import com.recruit.recruitms.entity.VerificationToken;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
-import com.recruit.recruitms.repository.UserRepository;
 import com.recruit.recruitms.repository.VerificationTokenRepository;
 import com.recruit.recruitms.security.jwt.JwtProvider;
 import com.recruit.recruitms.service.impl.MailService;
@@ -20,13 +18,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -49,7 +45,7 @@ public class AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
         user.setObjectState(Enum.ObjectState.CREATED);
-        user.setRoles(Enum.Role.USER);
+        user.setRoles(Enum.Role.CANDIDATE);
 
         userService.create(user);
 

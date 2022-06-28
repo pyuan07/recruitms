@@ -3,10 +3,9 @@ package com.recruit.recruitms.service;
 import com.recruit.recruitms.enumeration.Enum;
 
 import java.util.List;
-import java.util.UUID;
 
 //CRUD
-public interface IService<T,K> {
+public interface ICrudService<T,K> {
     T create(T t);
     List<T> getAll();
     List<T> getByObjectState(Enum.ObjectState objectState);

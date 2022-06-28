@@ -5,24 +5,19 @@ import com.recruit.recruitms.entity.User;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.UserRepository;
-import com.recruit.recruitms.service.IService;
+import com.recruit.recruitms.service.ICrudService;
 import com.recruit.recruitms.service.IUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 @Service
 @AllArgsConstructor
-public class UserService implements IService<User,UUID>, IUserService {
+public class UserService implements ICrudService<User,UUID>, IUserService {
 
     private final UserRepository repo;
     private final PasswordEncoder passwordEncoder;
@@ -52,7 +47,7 @@ public class UserService implements IService<User,UUID>, IUserService {
     }
 
     public User getById(UUID id){
-        return repo.findUserById(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
+        return repo.findUserByUserId(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
     }
 
     public User update(User user){
@@ -67,14 +62,14 @@ public class UserService implements IService<User,UUID>, IUserService {
     }
 
     public boolean terminate(UUID id){
-        User user = repo.findUserById(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
+        User user = repo.findUserByUserId(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
         user.setObjectState(Enum.ObjectState.TERMINATED);
         repo.save(user);
         return true;
     }
 
     public boolean activate(UUID id){
-        User user = repo.findUserById(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
+        User user = repo.findUserByUserId(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
         user.setObjectState(Enum.ObjectState.ACTIVE);
         repo.save(user);
         return true;

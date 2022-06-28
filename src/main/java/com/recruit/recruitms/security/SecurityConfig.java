@@ -58,9 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                         .antMatchers(HttpMethod.GET, "/api/subreddit")
                         .permitAll()
-                        .antMatchers(HttpMethod.GET, "/api/v1/user/")
-                        .permitAll()
                         .antMatchers(HttpMethod.GET, "/api/v1/user/**")
+                        .permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/v1/organization/**")
+                        .permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/v1/vacancy/**")
                         .permitAll()
                         .antMatchers("/v2/api-docs",
                                 "/configuration/ui",

@@ -1,5 +1,6 @@
 package com.recruit.recruitms.security.auditable;
 
+import com.recruit.recruitms.enumeration.Enum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -8,10 +9,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
@@ -33,4 +31,13 @@ public abstract class Auditable<U> {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Enum.ObjectState objectState;
+
+
+    public boolean isEnabled(){
+        return objectState == Enum.ObjectState.ACTIVE;
+    }
 }

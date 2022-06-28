@@ -4,8 +4,9 @@ public class Enum {
 
     public enum Role {
         ADMIN,
+        EMPLOYER,
         STAFF,
-        USER
+        CANDIDATE
     }
 
     public enum Gender {
@@ -20,5 +21,17 @@ public class Enum {
         PENDING,
         DRAFT,
         FROZEN
+    }
+
+    public enum ApplicationStatus{
+        APPLIED,
+        VIEWED,
+        IN_PROGRESS,
+        CANCEL,
+        COMPLETED
+    }
+
+    public enum TagType {
+        Resume
     }
 }

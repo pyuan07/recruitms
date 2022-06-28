@@ -33,11 +33,10 @@ public class UserConfig {
                     passwordEncoder.encode("admin123"),
                     Enum.Role.ADMIN,
                     LocalDate.of(2000,Month.AUGUST,10),
-                    Enum.Gender.MALE,
-                    Enum.ObjectState.ACTIVE
+                    Enum.Gender.MALE
             );
-            
-            repository.save(admin);
+            admin.setObjectState(Enum.ObjectState.ACTIVE);
+            if(repository.findAll().isEmpty()) repository.save(admin);
         };
     }
 }
