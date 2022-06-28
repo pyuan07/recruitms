@@ -29,4 +29,8 @@ public class Candidate implements Serializable {
     @JoinColumn(name = "fk_resume_id")
     private Resume resume;
 
+    public Candidate(UUID userId, User user) {
+        this.userId = userId;
+        this.user = user;
+    }
 }

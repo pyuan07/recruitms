@@ -45,7 +45,7 @@ public class AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
         user.setObjectState(Enum.ObjectState.CREATED);
-        user.setRoles(Enum.Role.CANDIDATE);
+        user.setRoles(registerRequest.getRole());
 
         userService.create(user);
 

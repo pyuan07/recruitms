@@ -1,5 +1,6 @@
 package com.recruit.recruitms.dto.request;
 
+import com.recruit.recruitms.enumeration.Enum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ public class RegisterRequest {
     private String username;
     private String password;
 
+    private Enum.Role role;
     public String getPassword() {
         return password;
     }

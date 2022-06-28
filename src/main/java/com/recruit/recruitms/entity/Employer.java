@@ -33,4 +33,9 @@ public class Employer implements Serializable {
     private Organization organization;
 
 
+    public Employer(UUID userId, User user) {
+        this.userId = userId;
+        this.user = user;
+    }
+
 }

@@ -32,4 +32,8 @@ public class Staff implements Serializable {
     @ToString.Exclude
     private Organization organization;
 
+    public Staff(UUID userId, User user) {
+        this.userId = userId;
+        this.user = user;
+    }
 }
