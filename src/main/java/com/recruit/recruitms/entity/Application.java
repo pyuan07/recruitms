@@ -22,7 +22,7 @@ public class Application extends Auditable<String> {
 
     @OneToOne
     @JoinColumn(name = "candidateId")
-    private Candidate candidate;
+    private User candidate;
 
     @OneToOne
     @JoinColumn(name = "resumeId")
@@ -41,7 +41,7 @@ public class Application extends Auditable<String> {
 
     @OneToOne
     @JoinColumn(name = "staffId")
-    private Staff viewBy;
+    private User viewBy;
 
     @Lob
     @Column(nullable = false)

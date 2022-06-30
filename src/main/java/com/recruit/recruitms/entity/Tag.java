@@ -27,5 +27,11 @@ public class Tag extends Auditable<String>{
 
     @Column(nullable = false)
     private Long totalUsed;
-    
+
+    public Tag(String name, Enum.TagType tagType, Long totalUsed) {
+        this.name = name;
+        this.tagType = tagType;
+        this.totalUsed = totalUsed;
+        super.setObjectState(Enum.ObjectState.ACTIVE);
+    }
 }

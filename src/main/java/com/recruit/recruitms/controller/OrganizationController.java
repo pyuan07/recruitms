@@ -1,5 +1,6 @@
 package com.recruit.recruitms.controller;
 
+import com.recruit.recruitms.dto.request.CreateOrganizationRequest;
 import com.recruit.recruitms.entity.Organization;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.service.impl.OrganizationService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path="api/v1/organization")
@@ -32,13 +34,13 @@ public class OrganizationController {
     }
 
     @GetMapping(path="/id/{id}")
-    public ResponseEntity<Organization> getOrganization(@PathVariable("id") Long id){
+    public ResponseEntity<Organization> getOrganization(@PathVariable("id") UUID id){
         return ResponseEntity.ok(_organizationService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Organization> createOrganization(@RequestBody Organization organization){
-        return ResponseEntity.ok(_organizationService.create(organization));
+    public ResponseEntity<Organization> createOrganization(@RequestBody CreateOrganizationRequest request){
+        return ResponseEntity.ok(_organizationService.createOrganizationByRequest(request));
     }
 
     @PutMapping
@@ -47,7 +49,7 @@ public class OrganizationController {
     }
 
     @DeleteMapping(path="{id}")
-    public boolean deleteOrganization(@PathVariable("id") Long id){
+    public boolean deleteOrganization(@PathVariable("id") UUID id){
         return _organizationService.delete(id);
     }
 

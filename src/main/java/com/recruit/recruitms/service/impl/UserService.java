@@ -1,15 +1,9 @@
 package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
-import com.recruit.recruitms.entity.Candidate;
-import com.recruit.recruitms.entity.Employer;
-import com.recruit.recruitms.entity.Staff;
 import com.recruit.recruitms.entity.User;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
-import com.recruit.recruitms.repository.CandidateRepository;
-import com.recruit.recruitms.repository.EmployerRepository;
-import com.recruit.recruitms.repository.StaffRepository;
 import com.recruit.recruitms.repository.UserRepository;
 import com.recruit.recruitms.service.ICrudService;
 import com.recruit.recruitms.service.IUserService;
@@ -26,9 +20,6 @@ import java.util.UUID;
 public class UserService implements ICrudService<User,UUID>, IUserService {
 
     private final UserRepository userRepo;
-    private final StaffRepository staffRepo;
-    private final EmployerRepository employerRepo;
-    private final CandidateRepository candidateRepo;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -44,19 +35,20 @@ public class UserService implements ICrudService<User,UUID>, IUserService {
         //Encode Password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        User newUser = userRepo.save(user);
-
-        switch (user.getRoles()){
-            case STAFF -> staffRepo.save(new Staff(newUser.getUserId(),newUser));
-            case EMPLOYER -> employerRepo.save(new Employer(newUser.getUserId(),newUser));
-            case CANDIDATE -> candidateRepo.save(new Candidate(newUser.getUserId(),newUser));
-        }
-
-        return newUser;
+        //switch (user.getRoles()){
+//            case STAFF -> staffRepo.save(new Staff(newUser.getUserId(),newUser));
+//            case EMPLOYER -> employerRepo.save(new Employer(newUser.getUserId(),newUser));
+//            case CANDIDATE -> candidateRepo.save(new Candidate(newUser.getUserId(),newUser));
+//        }
+        return userRepo.save(user);
     }
 
     public List<User> getAll() {
         return userRepo.findAll();
+    }
+
+    public List<User> getByRole(Enum.Role role) {
+        return this.getByObjectState(Enum.ObjectState.ACTIVE).stream().filter(x->x.getRoles().equals(role)).toList();
     }
 
     @Override

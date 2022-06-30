@@ -32,6 +32,11 @@ public class UserController {
         return ResponseEntity.ok(_userService.getByObjectState(Enum.ObjectState.valueOf(objectState)));
     }
 
+    @GetMapping(path="/role/{role}")
+    public ResponseEntity<List<User>> getUsersByRole(@PathVariable("role") Enum.Role role){
+        return ResponseEntity.ok(_userService.getByRole(role));
+    }
+
     @GetMapping(path="/id/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") UUID id){
         return ResponseEntity.ok(_userService.getById(id));

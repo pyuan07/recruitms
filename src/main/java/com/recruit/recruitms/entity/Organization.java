@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -41,7 +40,6 @@ public class Organization extends Auditable<String> {
     private String address;
 
     @OneToOne
-    @JoinColumn(name = "country_iso")
     private Country country;
 
     @NotEmpty(message = "Contact Email is required")
@@ -52,15 +50,21 @@ public class Organization extends Auditable<String> {
     @Column(nullable = false)
     private String phone;
 
-    @URL
     private String website;
 
-    public Organization(String name, String description, String address, String email, String phone, String website, Enum.ObjectState objectState) {
+    @OneToOne
+    private User owner;
+
+    public Organization(String name, String description, String address, Country country,String email, String phone, String website, User owner,Enum.ObjectState objectState) {
         this.name = name;
         this.description = description;
         this.address = address;
+        this.country = country;
         this.email = email;
         this.phone = phone;
         this.website = website;
+        this.owner = owner;
+
+        super.setObjectState(objectState);
     }
 }

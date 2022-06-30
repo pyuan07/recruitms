@@ -27,7 +27,7 @@ import java.util.UUID;
             @UniqueConstraint(name="user_username_unique",columnNames = "username")
     }
 )
-public class User extends Auditable<String> {
+public class User extends Auditable<String> implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")

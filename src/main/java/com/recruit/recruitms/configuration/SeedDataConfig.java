@@ -1,9 +1,11 @@
 package com.recruit.recruitms.configuration;
 
 import com.recruit.recruitms.entity.Country;
+import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.entity.User;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.repository.CountryRepository;
+import com.recruit.recruitms.repository.TagRepository;
 import com.recruit.recruitms.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class SeedDataConfig {
     private final PasswordEncoder passwordEncoder;
 
     private final UserRepository userRepository;
-
+    private final TagRepository tagRepository;
     private final CountryRepository countryRepository;
 
 
@@ -44,6 +46,15 @@ public class SeedDataConfig {
             );
             admin.setObjectState(Enum.ObjectState.ACTIVE);
             if(userRepository.findAll().isEmpty()) userRepository.save(admin);
+
+            //TAG
+            List<Tag> tags = List.of(
+                    new Tag("Software Engineer", Enum.TagType.Vacancy, 0L),
+                    new Tag("Internship", Enum.TagType.Vacancy,0L),
+                    new Tag("Fresh Graduate", Enum.TagType.Vacancy,0L),
+                    new Tag("Cyber Security", Enum.TagType.Vacancy,0L)
+                );
+            if(tagRepository.findAll().isEmpty()) tagRepository.saveAll(tags);
 
             //COUNTRY
             List<Country> countries = new ArrayList<>();

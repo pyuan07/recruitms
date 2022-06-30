@@ -48,9 +48,10 @@ public class Vacancy extends Auditable<String> {
     @OneToOne
     private Country country;
 
-    private Integer numberOfOpening;
+    @OneToOne
+    private Organization organization;
 
-    private Integer mimExperience;
+    private Integer numberOfOpening;
 
     private Float minSalary;
 
