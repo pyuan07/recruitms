@@ -43,9 +43,6 @@ public class Vacancy extends Auditable<String> {
     private Set<Tag> tag;
 
     @OneToOne
-    private Category category;
-
-    @OneToOne
     private Country country;
 
     @OneToOne

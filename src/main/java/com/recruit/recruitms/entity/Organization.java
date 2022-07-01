@@ -55,7 +55,17 @@ public class Organization extends Auditable<String> {
     @OneToOne
     private User owner;
 
-    public Organization(String name, String description, String address, Country country,String email, String phone, String website, User owner,Enum.ObjectState objectState) {
+    public Organization(
+            String name,
+            String description,
+            String address,
+            Country country,
+            String email,
+            String phone,
+            String website,
+            User owner,
+            Enum.ObjectState objectState)
+    {
         this.name = name;
         this.description = description;
         this.address = address;
