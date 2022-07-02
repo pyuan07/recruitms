@@ -2,6 +2,7 @@ package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.entity.Application;
+import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.ApplicationRepository;
@@ -21,6 +22,11 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
     public Application create(Application application) {
 
         return repo.save(application);
+    }
+
+    @Override
+    public List<Application> createInBulk(List<Application> applicationList){
+        return repo.saveAll(applicationList);
     }
 
     @Override

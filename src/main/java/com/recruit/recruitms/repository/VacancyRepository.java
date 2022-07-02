@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface VacancyRepository extends JpaRepository<Vacancy, UUID> {
+public interface VacancyRepository extends JpaRepository<Vacancy, Long> {
 
 
 }

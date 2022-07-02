@@ -29,8 +29,8 @@ import java.util.UUID;
 )
 public class User extends Auditable<String> implements Serializable {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
     @Type(type = "uuid-char")
     private UUID userId;

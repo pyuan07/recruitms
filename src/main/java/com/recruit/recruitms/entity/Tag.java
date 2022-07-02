@@ -5,6 +5,7 @@ import com.recruit.recruitms.security.auditable.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table
-public class Tag extends Auditable<String>{
+public class Tag extends Auditable<String> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;

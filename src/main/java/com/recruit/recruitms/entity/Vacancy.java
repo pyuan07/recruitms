@@ -1,28 +1,27 @@
 package com.recruit.recruitms.entity;
 
+import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.security.auditable.Auditable;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 
 @Entity
 @Table
-public class Vacancy extends Auditable<String> {
+public class Vacancy extends Auditable<String> implements Serializable {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
-    @Type(type = "uuid-char")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long vacancyId;
 
     @NotBlank(message = "Vacancy's title is required")
@@ -40,7 +39,7 @@ public class Vacancy extends Auditable<String> {
             joinColumns = @JoinColumn(name="vacancyId"),
             inverseJoinColumns = @JoinColumn(name="tagId")
     )
-    private Set<Tag> tag;
+    private List<Tag> tags;
 
     @OneToOne
     private Country country;
@@ -57,4 +56,29 @@ public class Vacancy extends Auditable<String> {
     private Boolean enableQuiz;
 
     private String remarks;
+
+    public Vacancy(String name,
+                   String description,
+                   List<Tag> tag,
+                   Country country,
+                   Organization organization,
+                   Integer numberOfOpening,
+                   Float minSalary,
+                   Float maxSalary,
+                   Boolean enableQuiz,
+                   String remarks,
+                   Enum.ObjectState objectState) {
+        this.name = name;
+        this.description = description;
+        this.tags = tag;
+        this.country = country;
+        this.organization = organization;
+        this.numberOfOpening = numberOfOpening;
+        this.minSalary = minSalary;
+        this.maxSalary = maxSalary;
+        this.enableQuiz = enableQuiz;
+        this.remarks = remarks;
+        super.setObjectState(objectState);
+    }
+
 }

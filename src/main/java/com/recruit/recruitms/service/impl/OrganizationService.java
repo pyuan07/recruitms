@@ -28,6 +28,11 @@ public class OrganizationService implements ICrudService<Organization, UUID>, IO
     }
 
     @Override
+    public List<Organization> createInBulk(List<Organization> organizationList){
+        return repo.saveAll(organizationList);
+    }
+
+    @Override
     public Organization createOrganizationByRequest(CreateOrganizationRequest request) {
         Organization organization =
                 new Organization(

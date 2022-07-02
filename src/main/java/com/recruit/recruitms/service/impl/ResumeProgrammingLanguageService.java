@@ -20,8 +20,12 @@ public class ResumeProgrammingLanguageService implements ICrudService<ResumeProg
 
     @Override
     public ResumeProgrammingLanguage create(ResumeProgrammingLanguage resumeProgrammingLanguage) {
-
         return repo.save(resumeProgrammingLanguage);
+    }
+
+    @Override
+    public List<ResumeProgrammingLanguage> createInBulk(List<ResumeProgrammingLanguage> resumeProgrammingLanguageList){
+        return repo.saveAll(resumeProgrammingLanguageList);
     }
 
     @Override

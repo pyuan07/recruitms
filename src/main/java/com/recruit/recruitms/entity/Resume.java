@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Getter
@@ -16,10 +17,10 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Resume extends Auditable<String> {
+public class Resume extends Auditable<String> implements Serializable {
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
     @Type(type = "uuid-char")
     private Long resumeId;
@@ -28,7 +29,7 @@ public class Resume extends Auditable<String> {
     @JoinColumn(name = "fk_image_id")
     private Image profilePicture;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name="resume_tag",

@@ -43,6 +43,21 @@ public class UserService implements ICrudService<User,UUID>, IUserService {
         return userRepo.save(user);
     }
 
+    @Override
+    public List<User> createInBulk(List<User> userList){
+        userList.forEach( user -> {
+            if(userRepo.findByEmail(user.getEmail()).isPresent())
+                throw new ApiRequestException(Constants.EMAIL_EXIST);
+
+            if(userRepo.findByUsername(user.getUsername()).isPresent())
+                throw new ApiRequestException(Constants.USERNAME_EXIST);
+
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        });
+
+        return userRepo.saveAll(userList);
+    }
+
     public List<User> getAll() {
         return userRepo.findAll();
     }

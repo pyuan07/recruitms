@@ -24,6 +24,11 @@ public class ProgrammingLanguageService implements ICrudService<ProgrammingLangu
     }
 
     @Override
+    public List<ProgrammingLanguage> createInBulk(List<ProgrammingLanguage> programmingLanguageList){
+        return repo.saveAll(programmingLanguageList);
+    }
+
+    @Override
     public List<ProgrammingLanguage> getAll() {
         return repo.findAll();
     }

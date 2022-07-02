@@ -24,6 +24,11 @@ public class TagService implements ICrudService<Tag, Long>, ITagService {
     }
 
     @Override
+    public List<Tag> createInBulk(List<Tag> tags){
+        return repo.saveAll(tags);
+    }
+
+    @Override
     public List<Tag> getAll() {
         return repo.findAll();
     }
@@ -36,6 +41,11 @@ public class TagService implements ICrudService<Tag, Long>, ITagService {
     @Override
     public Tag getById(Long id){
         return repo.findById(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
+    }
+
+    @Override
+    public Tag getByName(String name){
+        return repo.findByName(name).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " name: "+ name));
     }
 
     @Override

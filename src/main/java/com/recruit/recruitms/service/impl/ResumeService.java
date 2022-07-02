@@ -3,6 +3,7 @@ package com.recruit.recruitms.service.impl;
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.entity.Resume;
 import com.recruit.recruitms.entity.Resume;
+import com.recruit.recruitms.entity.ResumeProgrammingLanguage;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.ResumeRepository;
@@ -23,6 +24,11 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
     public Resume create(Resume resume) {
 
         return repo.save(resume);
+    }
+
+    @Override
+    public List<Resume> createInBulk(List<Resume> resumeList){
+        return repo.saveAll(resumeList);
     }
 
     @Override

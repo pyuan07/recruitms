@@ -4,6 +4,7 @@ import com.recruit.recruitms.security.auditable.Auditable;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -12,8 +13,8 @@ import javax.persistence.*;
 @ToString
 
 @Entity
-@Table(name = "resume_programming_language")
-public class ResumeProgrammingLanguage extends Auditable<String> {
+@Table
+public class ResumeProgrammingLanguage extends Auditable<String> implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeProgrammingLanguageId;

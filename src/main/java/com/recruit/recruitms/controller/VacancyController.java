@@ -1,5 +1,7 @@
 package com.recruit.recruitms.controller;
 
+import com.recruit.recruitms.dto.request.CreateVacancyRequest;
+import com.recruit.recruitms.dto.request.VacancyDto;
 import com.recruit.recruitms.entity.Vacancy;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.service.impl.VacancyService;
@@ -8,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(path="api/v1/vacancy")
@@ -33,22 +34,22 @@ public class VacancyController {
     }
 
     @GetMapping(path="/id/{id}")
-    public ResponseEntity<Vacancy> getVacancy(@PathVariable("id") UUID id){
+    public ResponseEntity<Vacancy> getVacancy(@PathVariable("id") Long id){
         return ResponseEntity.ok(_vacancyService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Vacancy> createVacancy(@RequestBody Vacancy vacancy){
-        return ResponseEntity.ok(_vacancyService.create(vacancy));
+    public ResponseEntity<Vacancy> createVacancy(@RequestBody CreateVacancyRequest request){
+        return ResponseEntity.ok(_vacancyService.createVacancyByRequest(request));
     }
 
     @PutMapping
-    public ResponseEntity<Vacancy> updateVacancy(@RequestBody Vacancy vacancy){
-        return ResponseEntity.ok(_vacancyService.update(vacancy));
+    public ResponseEntity<Vacancy> updateVacancy(@RequestBody VacancyDto vacancy){
+        return ResponseEntity.ok(_vacancyService.updateByRequest(vacancy));
     }
 
     @DeleteMapping(path="{id}")
-    public boolean deleteVacancy(@PathVariable("id") UUID id){
+    public boolean deleteVacancy(@PathVariable("id") Long id){
         return _vacancyService.delete(id);
     }
 
