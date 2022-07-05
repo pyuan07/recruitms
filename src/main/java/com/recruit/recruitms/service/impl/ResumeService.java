@@ -63,7 +63,7 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
 
 
         Resume resume = new Resume(
-                request.getResumePdf(),
+                request.getProfilePicture(),
                 _userService.getById(request.getOwner()),
                 selectedTags,
                 _countryService.getByIso(request.getCountryISO()),
@@ -179,5 +179,14 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
         }
 
         return filePath;
+    }
+
+    @Override
+    public Resume getResumeByCandidateId(UUID userId) {
+        return this.getByObjectState(Enum.ObjectState.ACTIVE)
+                .stream()
+                .filter(x->x.getCandidate().getUserId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> new ApiRequestException("Resume not found."));
     }
 }

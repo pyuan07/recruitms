@@ -42,6 +42,11 @@ public class ResumeController {
         return ResponseEntity.ok(_resumeService.getByObjectState(Enum.ObjectState.valueOf(objectState)));
     }
 
+    @GetMapping("/getResumeByCandidateId/{userId}")
+    public ResponseEntity<Resume> getResumeByCandidateId(@PathVariable UUID userId){
+        return ResponseEntity.ok(_resumeService.getResumeByCandidateId(userId));
+    }
+
     @GetMapping(path="/id/{id}")
     public ResponseEntity<Resume> getResume(@PathVariable("id") UUID id){
         return ResponseEntity.ok(_resumeService.getById(id));
@@ -69,7 +74,7 @@ public class ResumeController {
         return ResponseEntity.ok(uploadResponse);
     }
 
-    @PostMapping(path="download/pdf/{filename}")
+    @GetMapping(path="download/pdf/{filename}")
     public ResponseEntity<Resource> downloadResumePdf(@PathVariable("filename") String filename) throws IOException {
         Path filePath = _resumeService.downloadResumePdf(filename);
         Resource resource = new UrlResource(filePath.toUri());
@@ -89,7 +94,7 @@ public class ResumeController {
         return ResponseEntity.ok(uploadResponse);
     }
 
-    @PostMapping(path="download/image/{filename}")
+    @GetMapping(path="download/image/{filename}")
     public ResponseEntity<Resource> downloadProfilePic(@PathVariable("filename") String filename) throws IOException {
         Path filePath = _resumeService.downloadProfilePicture(filename);
         Resource resource = new UrlResource(filePath.toUri());

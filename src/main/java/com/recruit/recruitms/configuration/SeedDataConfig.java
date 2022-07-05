@@ -55,15 +55,6 @@ public class SeedDataConfig {
                             Enum.Gender.MALE
                     ),
                     new User(
-                            "Staff A",
-                            "staff01@mail.com",
-                            "s01",
-                            passwordEncoder.encode("111111"),
-                            Enum.Role.STAFF,
-                            LocalDate.of(1980,Month.JANUARY,29),
-                            Enum.Gender.FEMALE
-                    ),
-                    new User(
                             "Chew Jing Qiao",
                             "chew0000@mail.com",
                             "cjq",

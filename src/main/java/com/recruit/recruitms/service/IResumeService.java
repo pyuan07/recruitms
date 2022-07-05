@@ -17,4 +17,5 @@ public interface IResumeService {
     String uploadProfilePicture(MultipartFile file) throws IOException;
     Path downloadProfilePicture(String fileName) throws IOException;
 
+    Resume getResumeByCandidateId(UUID userId);
 }
