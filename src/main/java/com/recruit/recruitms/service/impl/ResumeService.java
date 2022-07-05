@@ -1,29 +1,79 @@
 package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
+import com.recruit.recruitms.dto.request.CreateResumeRequest;
 import com.recruit.recruitms.entity.Resume;
-import com.recruit.recruitms.entity.Resume;
-import com.recruit.recruitms.entity.ResumeProgrammingLanguage;
+import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.ResumeRepository;
-import com.recruit.recruitms.service.IResumeService;
+import com.recruit.recruitms.security.auditable.AuditorAware;
 import com.recruit.recruitms.service.ICrudService;
+import com.recruit.recruitms.service.IResumeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
+import static java.nio.file.Files.copy;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 @AllArgsConstructor
 public class ResumeService implements ICrudService<Resume, UUID>, IResumeService {
     private final ResumeRepository repo;
+    private final CountryService _countryService;
+    private final UserService _userService;
+    private final TagService _tagService;
+
+    public static final String PDF_DIRECTORY = "D:\\User's File\\Downloads\\uploads\\resume";
+    public static final String IMAGE_DIRECTORY = "D:\\User's File\\Downloads\\uploads\\profilePicture";
+
+
 
     @Override
     public Resume create(Resume resume) {
 
         return repo.save(resume);
+    }
+
+    @Override
+    public Resume createResumeByRequest(CreateResumeRequest request) throws IOException {
+        List<String> newTagString = request.getTags().stream().filter(tag -> ! _tagService.getAll().stream().map(Tag::getName).toList().contains(tag)).toList();
+
+        List<Tag> newTagList = newTagString.stream().map(x-> new Tag(x, Enum.TagType.Vacancy,0L)).toList();
+        _tagService.createInBulk(newTagList);
+
+        List<Tag> selectedTags = request.getTags().stream().map(_tagService::getByName).toList();
+        //Update TotalUsed of Tag
+        selectedTags.forEach(x->{
+            x.setTotalUsed(x.getTotalUsed() + 1);
+            _tagService.update(x);
+        });
+
+
+        Resume resume = new Resume(
+                request.getResumePdf(),
+                _userService.getById(request.getOwner()),
+                selectedTags,
+                _countryService.getByIso(request.getCountryISO()),
+                request.getTotalExperienceYear(),
+                request.getSalaryExpectation(),
+                request.getRemarks(),
+                request.getResumePdf(),
+                request.getObjectState()
+            );
+        return this.create(resume);
     }
 
     @Override
@@ -73,5 +123,61 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
         resume.setObjectState(Enum.ObjectState.ACTIVE);
         repo.save(resume);
         return true;
+    }
+
+    @Override
+    public String uploadResumePdf(MultipartFile file) throws IOException {
+        Date date = new Date() ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm") ;
+
+        AuditorAware audit = new AuditorAware();
+
+        String fileName = file.getOriginalFilename();
+        if(fileName == null) throw new NullPointerException("The filename does not exist.");
+        int lastDotIndex = fileName.lastIndexOf('.');
+        String saveName = fileName.substring(0, lastDotIndex) + "_" + audit.getCurrentAuditor().orElse("") + "_" + dateFormat.format(date) + fileName.substring(lastDotIndex);
+        Path fileStorage = Paths.get(PDF_DIRECTORY,saveName).toAbsolutePath().normalize();
+        copy(file.getInputStream(),fileStorage,REPLACE_EXISTING);
+
+        return saveName;
+    }
+
+    @Override
+    public Path downloadResumePdf(String fileName) throws IOException {
+        Path filePath = Paths.get(PDF_DIRECTORY).toAbsolutePath().normalize().resolve(fileName);
+
+        if(!Files.exists(filePath)){
+            throw new FileNotFoundException(fileName + "was not found on the server");
+        }
+
+        return filePath;
+    }
+
+    @Override
+    public String uploadProfilePicture(MultipartFile file) throws IOException {
+        Date date = new Date() ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm") ;
+
+        AuditorAware audit = new AuditorAware();
+
+        String fileName = file.getOriginalFilename();
+        if(fileName == null) throw new NullPointerException("The filename does not exist.");
+        int lastDotIndex = fileName.lastIndexOf('.');
+        String saveName = fileName.substring(0, lastDotIndex) + "_" + audit.getCurrentAuditor().orElse("") + "_" + dateFormat.format(date) + fileName.substring(lastDotIndex);
+        Path fileStorage = Paths.get(IMAGE_DIRECTORY,saveName).toAbsolutePath().normalize();
+        copy(file.getInputStream(),fileStorage,REPLACE_EXISTING);
+
+        return saveName;
+    }
+
+    @Override
+    public Path downloadProfilePicture(String fileName) throws IOException {
+        Path filePath = Paths.get(IMAGE_DIRECTORY).toAbsolutePath().normalize().resolve(fileName);
+
+        if(!Files.exists(filePath)){
+            throw new FileNotFoundException(fileName + "was not found on the server");
+        }
+
+        return filePath;
     }
 }

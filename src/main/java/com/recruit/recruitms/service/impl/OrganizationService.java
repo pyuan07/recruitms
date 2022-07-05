@@ -23,6 +23,11 @@ public class OrganizationService implements ICrudService<Organization, UUID>, IO
 
     @Override
     public Organization create(Organization organization) {
+        if(repo.findByEmail(organization.getEmail()).isPresent())
+            throw new ApiRequestException(Constants.EMAIL_EXIST);
+
+        if(repo.findByName(organization.getName()).isPresent())
+            throw new ApiRequestException(Constants.USERNAME_EXIST);
 
         return repo.save(organization);
     }

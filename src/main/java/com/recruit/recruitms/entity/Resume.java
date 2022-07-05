@@ -1,5 +1,6 @@
 package com.recruit.recruitms.entity;
 
+import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.security.auditable.Auditable;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -7,7 +8,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.sql.Blob;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,11 +26,14 @@ public class Resume extends Auditable<String> implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
     @Type(type = "uuid-char")
-    private Long resumeId;
+    private UUID resumeId;
+
+//    @OneToOne
+//    @JoinColumn(name = "fk_image_id")
+    private String profilePicture;
 
     @OneToOne
-    @JoinColumn(name = "fk_image_id")
-    private Image profilePicture;
+    private User candidate;
 
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
@@ -36,7 +42,7 @@ public class Resume extends Auditable<String> implements Serializable {
             joinColumns = @JoinColumn(name="resumeId"),
             inverseJoinColumns = @JoinColumn(name="tagId")
     )
-    private Set<Tag> tag;
+    private List<Tag> tags;
 
     @OneToOne
     private Country country;
@@ -50,7 +56,18 @@ public class Resume extends Auditable<String> implements Serializable {
     @Column
     private String remarks;
 
-    @Lob
     @Column(nullable = false)
-    private byte[] resumePdf;
+    private String resumePdf;
+
+    public Resume(String profilePicture, User candidate, List<Tag> tags, Country country, Integer totalExperienceYear, Float salaryExpectation, String remarks, String resumePdf, Enum.ObjectState objectState) {
+        this.profilePicture = profilePicture;
+        this.candidate = candidate;
+        this.tags = tags;
+        this.country = country;
+        this.totalExperienceYear = totalExperienceYear;
+        this.salaryExpectation = salaryExpectation;
+        this.remarks = remarks;
+        this.resumePdf = resumePdf;
+        super.setObjectState(objectState);
+    }
 }

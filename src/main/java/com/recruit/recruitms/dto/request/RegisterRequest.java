@@ -12,6 +12,9 @@ public class RegisterRequest {
     private String email;
     private String username;
     private String password;
+    private String fullName;
+    private Enum.Gender gender;
+
 
     private Enum.Role role;
     public String getPassword() {

@@ -44,6 +44,8 @@ public class AuthService {
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(registerRequest.getPassword());
+        user.setFullName(registerRequest.getFullName());
+        user.setGender(registerRequest.getGender());
         user.setObjectState(Enum.ObjectState.CREATED);
         user.setRoles(registerRequest.getRole());
 
@@ -51,9 +53,9 @@ public class AuthService {
 
         String token = generateVerificationToken(user);
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                user.getEmail(), "Thank you for signing up to Spring Reddit, " +
+                user.getEmail(), "Thank you for signing up to RecruIT Management System, " +
                 "please click on the below url to activate your account : " +
-                "http://localhost:8080/api/auth/accountVerification/" + token));
+                "http://localhost:055117/api/auth/accountVerification/" + token));
     }
 
     //@Transactional(readOnly = true)

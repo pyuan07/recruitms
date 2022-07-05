@@ -1,8 +1,10 @@
 package com.recruit.recruitms.configuration;
 
+import com.recruit.recruitms.dto.request.CreateVacancyRequest;
 import com.recruit.recruitms.entity.*;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.repository.*;
+import com.recruit.recruitms.service.impl.VacancyService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +29,7 @@ public class SeedDataConfig {
     private final CountryRepository countryRepository;
     private final OrganizationRepository organizationRepository;
     private final VacancyRepository vacancyRepository;
+
 
     @Bean
     CommandLineRunner commandLineRunner(){

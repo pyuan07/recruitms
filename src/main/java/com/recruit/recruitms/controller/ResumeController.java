@@ -1,12 +1,22 @@
 package com.recruit.recruitms.controller;
 
+import com.recruit.recruitms.dto.request.CreateResumeRequest;
+import com.recruit.recruitms.dto.response.UploadResponse;
 import com.recruit.recruitms.entity.Resume;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.service.impl.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,8 +48,8 @@ public class ResumeController {
     }
 
     @PostMapping
-    public ResponseEntity<Resume> createResume(@RequestBody Resume resume){
-        return ResponseEntity.ok(_resumeService.create(resume));
+    public ResponseEntity<Resume> createResume(@RequestBody CreateResumeRequest request) throws IOException {
+        return ResponseEntity.ok(_resumeService.createResumeByRequest(request));
     }
 
     @PutMapping
@@ -52,4 +62,43 @@ public class ResumeController {
         return _resumeService.delete(id);
     }
 
+    @PostMapping(path="/upload/pdf")
+    public ResponseEntity<UploadResponse> uploadResumePdf(@RequestParam("file")MultipartFile multipartFile) throws IOException {
+        UploadResponse uploadResponse = new UploadResponse();
+        uploadResponse.setFilename(_resumeService.uploadResumePdf(multipartFile));
+        return ResponseEntity.ok(uploadResponse);
+    }
+
+    @PostMapping(path="download/pdf/{filename}")
+    public ResponseEntity<Resource> downloadResumePdf(@PathVariable("filename") String filename) throws IOException {
+        Path filePath = _resumeService.downloadResumePdf(filename);
+        Resource resource = new UrlResource(filePath.toUri());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("File-Name",filename);
+        httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION,"attachment;File-Name=" + resource.getFilename());
+
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+                .headers(httpHeaders).body(resource);
+    }
+
+    @PostMapping(path="upload/image")
+    public ResponseEntity<UploadResponse> uploadProfilePic(@RequestParam("imageFile")MultipartFile multipartFile) throws IOException {
+        UploadResponse uploadResponse = new UploadResponse();
+        uploadResponse.setFilename(_resumeService.uploadProfilePicture(multipartFile));
+        return ResponseEntity.ok(uploadResponse);
+    }
+
+    @PostMapping(path="download/image/{filename}")
+    public ResponseEntity<Resource> downloadProfilePic(@PathVariable("filename") String filename) throws IOException {
+        Path filePath = _resumeService.downloadProfilePicture(filename);
+        Resource resource = new UrlResource(filePath.toUri());
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("File-Name",filename);
+        httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION,"attachment;File-Name=" + resource.getFilename());
+
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+                .headers(httpHeaders).body(resource);
+    }
 }

@@ -1,6 +1,6 @@
-package com.recruit.recruitms.service;
-
-public interface IResumeProgrammingLanguageService {
-
-
-}
+//package com.recruit.recruitms.service;
+//
+//public interface IResumeProgrammingLanguageService {
+//
+//
+//}
