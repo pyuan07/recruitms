@@ -1,6 +1,7 @@
 package com.recruit.recruitms.controller;
 
 import com.recruit.recruitms.dto.request.CreateResumeRequest;
+import com.recruit.recruitms.dto.request.ResumeDto;
 import com.recruit.recruitms.dto.response.UploadResponse;
 import com.recruit.recruitms.entity.Resume;
 import com.recruit.recruitms.enumeration.Enum;
@@ -58,8 +59,8 @@ public class ResumeController {
     }
 
     @PutMapping
-    public ResponseEntity<Resume> updateResume(@RequestBody Resume resume){
-        return ResponseEntity.ok(_resumeService.update(resume));
+    public ResponseEntity<Resume> updateResume(@RequestBody ResumeDto resume){
+        return ResponseEntity.ok(_resumeService.updateByRequest(resume));
     }
 
     @DeleteMapping(path="{id}")

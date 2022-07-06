@@ -2,6 +2,7 @@ package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.dto.request.CreateResumeRequest;
+import com.recruit.recruitms.dto.request.ResumeDto;
 import com.recruit.recruitms.entity.Resume;
 import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.enumeration.Enum;
@@ -175,7 +176,7 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
         Path filePath = Paths.get(IMAGE_DIRECTORY).toAbsolutePath().normalize().resolve(fileName);
 
         if(!Files.exists(filePath)){
-            throw new FileNotFoundException(fileName + "was not found on the server");
+            throw new FileNotFoundException(fileName + " was not found on the server");
         }
 
         return filePath;
@@ -188,5 +189,28 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
                 .filter(x->x.getCandidate().getUserId().equals(userId))
                 .findFirst()
                 .orElseThrow(() -> new ApiRequestException("Resume not found."));
+    }
+
+    @Override
+    public Resume updateByRequest(ResumeDto resume) {
+        List<String> newTagString = resume.getTagString().stream().filter(tag -> ! _tagService.getAll().stream().map(Tag::getName).toList().contains(tag)).toList();
+        List<Tag> newTagList = newTagString.stream().map(x-> new Tag(x, Enum.TagType.Vacancy,0L)).toList();
+        _tagService.createInBulk(newTagList);
+
+        //Update TotalUsed of Tag
+        List<Tag> oldSelectedTags = resume.getTags();
+        oldSelectedTags.forEach(x->{
+            x.setTotalUsed(x.getTotalUsed() - 1);
+            _tagService.update(x);
+        });
+
+        List<Tag> selectedTags = resume.getTagString().stream().map(_tagService::getByName).toList();
+        selectedTags.forEach(x->{
+            x.setTotalUsed(x.getTotalUsed() + 1);
+            _tagService.update(x);
+        });
+
+        resume.setTags(selectedTags);
+        return this.update(resume.mapToEntity());
     }
 }

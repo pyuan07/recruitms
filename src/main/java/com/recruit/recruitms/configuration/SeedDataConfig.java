@@ -29,6 +29,7 @@ public class SeedDataConfig {
     private final CountryRepository countryRepository;
     private final OrganizationRepository organizationRepository;
     private final VacancyRepository vacancyRepository;
+    private final ResumeRepository resumeRepository;
 
 
     @Bean
@@ -55,12 +56,30 @@ public class SeedDataConfig {
                             Enum.Gender.MALE
                     ),
                     new User(
+                            "Employer B",
+                            "employer02@mail.com",
+                            "e02",
+                            passwordEncoder.encode("111111"),
+                            Enum.Role.EMPLOYER,
+                            LocalDate.of(1988,Month.NOVEMBER,17),
+                            Enum.Gender.MALE
+                    ),
+                    new User(
                             "Chew Jing Qiao",
                             "chew0000@mail.com",
                             "cjq",
                             passwordEncoder.encode("111111"),
                             Enum.Role.CANDIDATE,
                             LocalDate.of(2000,Month.JUNE,26),
+                            Enum.Gender.MALE
+                    ),
+                    new User(
+                            "Ng Pin Yuan",
+                            "pinyuan13225@mail.com",
+                            "npy",
+                            passwordEncoder.encode("111111"),
+                            Enum.Role.CANDIDATE,
+                            LocalDate.of(2000,Month.JULY,7),
                             Enum.Gender.MALE
                     )
             );
@@ -72,6 +91,9 @@ public class SeedDataConfig {
                     new Tag("Software Engineer", Enum.TagType.Vacancy, 0L),
                     new Tag("Internship", Enum.TagType.Vacancy,0L),
                     new Tag("Fresh Graduate", Enum.TagType.Vacancy,0L),
+                    new Tag("Master", Enum.TagType.Vacancy,0L),
+                    new Tag("Degree", Enum.TagType.Vacancy,0L),
+                    new Tag("Foundation", Enum.TagType.Vacancy,0L),
                     new Tag("Cyber Security", Enum.TagType.Vacancy,0L)
                 );
             if(tagRepository.findAll().isEmpty()) tagRepository.saveAll(tags);
@@ -107,7 +129,38 @@ public class SeedDataConfig {
             );
 
             if(organizationRepository.findAll().isEmpty()) organizationRepository.save(organization);
+
+            Vacancy vacancy = new Vacancy(
+                    "Vacancy A",
+                    "A web development vacancy",
+                    tags,
+                    countryRepository.findByCode("MY").get(),
+                    organizationRepository.findByName("Company A").get(),
+                    30,
+                    3000f,
+                    5000f,
+                    false,
+                    "First come First serve",
+                    Enum.ObjectState.ACTIVE
+            );
+
+//            if(vacancyRepository.findAll().isEmpty()) vacancyRepository.save(vacancy);
+
+            Resume resume = new Resume(
+                    "photo2_admin_202207061210.jpg",
+                    userRepository.findByUsername("npy").get(),
+                    tags,
+                    countryRepository.findByCode("MY").get(),
+                    2,
+                    4000f,
+                    "Gradute soon",
+                    "CV_npy_202207061153.pdf",
+                    Enum.ObjectState.ACTIVE
+            );
+            if(resumeRepository.findAll().isEmpty()) resumeRepository.save(resume);
+
         };
+
 
 
     }

@@ -1,6 +1,7 @@
 package com.recruit.recruitms.service;
 
 import com.recruit.recruitms.dto.request.CreateResumeRequest;
+import com.recruit.recruitms.dto.request.ResumeDto;
 import com.recruit.recruitms.entity.Resume;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +19,7 @@ public interface IResumeService {
     Path downloadProfilePicture(String fileName) throws IOException;
 
     Resume getResumeByCandidateId(UUID userId);
+
+    Resume updateByRequest(ResumeDto resume);
+
 }
