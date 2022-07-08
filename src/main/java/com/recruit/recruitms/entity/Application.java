@@ -40,11 +40,12 @@ public class Application extends Auditable<String> implements Serializable {
     @Column
     private String remarks;
 
-    @OneToOne
-    @JoinColumn(name = "staffId")
-    private User viewBy;
-
-    @Lob
-    @Column(nullable = false)
-    private byte[] resumePdf;
+    public Application(User candidate, Resume resume, Vacancy vacancy, Enum.ApplicationStatus status, String remarks, Enum.ObjectState objectState) {
+        this.candidate = candidate;
+        this.resume = resume;
+        this.vacancy = vacancy;
+        this.status = status;
+        this.remarks = remarks;
+        super.setObjectState(objectState);
+    }
 }

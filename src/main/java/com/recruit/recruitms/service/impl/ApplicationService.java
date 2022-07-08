@@ -72,4 +72,11 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
         repo.save(application);
         return true;
     }
+
+    @Override
+    public List<Application> getByStatus(Enum.ApplicationStatus status){
+        return repo.findAll().stream().filter(x->x.getObjectState() == Enum.ObjectState.ACTIVE && x.getStatus() == status).toList();
+
+    }
+
 }

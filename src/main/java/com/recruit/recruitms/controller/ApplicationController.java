@@ -31,6 +31,11 @@ public class ApplicationController {
         return ResponseEntity.ok(_applicationService.getByObjectState(Enum.ObjectState.valueOf(objectState)));
     }
 
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Application>> getApplicationsByStatus(@PathVariable String status){
+        return ResponseEntity.ok(_applicationService.getByStatus(Enum.ApplicationStatus.valueOf(status)));
+    }
+
     @GetMapping(path="/id/{id}")
     public ResponseEntity<Application> getApplication(@PathVariable("id") Long id){
         return ResponseEntity.ok(_applicationService.getById(id));

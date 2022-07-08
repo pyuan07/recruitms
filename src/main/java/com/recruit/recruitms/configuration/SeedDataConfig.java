@@ -157,7 +157,7 @@ public class SeedDataConfig {
                     "CV_npy_202207061153.pdf",
                     Enum.ObjectState.ACTIVE
             );
-            if(resumeRepository.findAll().isEmpty()) resumeRepository.save(resume);
+//            if(resumeRepository.findAll().isEmpty()) resumeRepository.save(resume);
 
         };
 

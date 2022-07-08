@@ -25,8 +25,9 @@ public class Enum {
 
     public enum ApplicationStatus{
         APPLIED,
-        VIEWED,
         IN_PROGRESS,
+        SHORTLISTED,
+        DECLINED,
         CANCEL,
         COMPLETED
     }

@@ -3,15 +3,10 @@ package com.recruit.recruitms.entity;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.security.auditable.Auditable;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 @Setter
