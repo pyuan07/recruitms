@@ -56,4 +56,13 @@ public class ApplicationController {
         return _applicationService.delete(id);
     }
 
+    @GetMapping(path="/shortlist/{id}")
+    public ResponseEntity<Application> shortlistApplication(@PathVariable("id") Long id){
+        return ResponseEntity.ok(_applicationService.shortlistApplication(id));
+    }
+
+    @GetMapping(path="/decline/{id}")
+    public ResponseEntity<Application> declineApplication(@PathVariable("id") Long id){
+        return ResponseEntity.ok(_applicationService.declineApplication(id));
+    }
 }

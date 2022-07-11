@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.OK;
@@ -24,9 +25,15 @@ public class AuthController {
     //private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> signup(@RequestBody RegisterRequest registerRequest)  throws MessagingException{
         authService.signup(registerRequest);
         return new ResponseEntity<>(OK);
+    }
+
+    @GetMapping("accountVerification/resend/{email}")
+    public ResponseEntity<String> resendVerificationEmail (@PathVariable String email)  throws MessagingException{
+        authService.resendVerificationEmail(email);
+        return new ResponseEntity<>("Verification Email sent Successfully", OK);
     }
 
     @GetMapping("accountVerification/{token}")

@@ -12,7 +12,9 @@ import com.recruit.recruitms.repository.VerificationTokenRepository;
 import com.recruit.recruitms.security.jwt.JwtProvider;
 import com.recruit.recruitms.service.impl.MailService;
 import com.recruit.recruitms.service.impl.UserService;
+import com.recruit.recruitms.service.impl.VerificationTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +25,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,13 +36,14 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
-    private final VerificationTokenRepository verificationTokenRepository;
+
+    private final VerificationTokenService verificationTokenService;
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     //private final RefreshTokenService refreshTokenService;
 
-    public void signup(RegisterRequest registerRequest) {
+    public void signup(RegisterRequest registerRequest){
         User user = new User();
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
@@ -53,9 +57,18 @@ public class AuthService {
 
         String token = generateVerificationToken(user);
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
-                user.getEmail(), "Thank you for signing up to RecruIT Management System, " +
+                user.getEmail(), user.getFullName(),"Thank you for signing up to RecruIT Management System, " +
                 "please click on the below url to activate your account : " +
                 "http://localhost:055117/api/auth/accountVerification/" + token));
+    }
+
+    public void resendVerificationEmail(String email) {
+        VerificationToken token = verificationTokenService.getByEmail(email);
+        User user = userService.getByEmail(email);
+        mailService.sendMail(new NotificationEmail("Please Activate your Account",
+                user.getEmail(), user.getFullName() ,"Thank you for signing up to RecruIT Management System, " +
+                "please click on the below url to activate your account : " +
+                "http://localhost:055117/api/auth/accountVerification/" + token.getToken()));
     }
 
     //@Transactional(readOnly = true)
@@ -78,12 +91,12 @@ public class AuthService {
         verificationToken.setToken(token);
         verificationToken.setUser(user);
 
-        verificationTokenRepository.save(verificationToken);
+        verificationTokenService.create(verificationToken);
         return token;
     }
 
     public void verifyAccount(String token) {
-        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+        Optional<VerificationToken> verificationToken = verificationTokenService.getByToken(token);
         fetchUserAndEnable(verificationToken.orElseThrow(() -> new ApiRequestException("Invalid Token")));
     }
 

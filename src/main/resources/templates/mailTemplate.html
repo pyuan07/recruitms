@@ -1,8 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!-- use the font -->
 </head>
 <body>
-    <span th:text="${message}"></span>
+<p th:text="${'Hello Dear ' + name}"></p><br>
+
+<p th:text="${message}"></p>
+
+</p>
+
+
+<p>
+    Send at: <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></span>
+</p>
+
+
+
+<p>
+    Regards, <br />
+    RecruIT Management System
+</p>
 </body>
 </html>

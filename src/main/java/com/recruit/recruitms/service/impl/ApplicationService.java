@@ -2,6 +2,7 @@ package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.entity.Application;
+import com.recruit.recruitms.entity.NotificationEmail;
 import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplicationService implements ICrudService<Application, Long>, IApplicationService {
     private final ApplicationRepository repo;
+    private final MailService mailService;
 
     @Override
     public Application create(Application application) {
@@ -77,6 +79,32 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
     public List<Application> getByStatus(Enum.ApplicationStatus status){
         return repo.findAll().stream().filter(x->x.getObjectState() == Enum.ObjectState.ACTIVE && x.getStatus() == status).toList();
 
+    }
+
+    @Override
+    public Application shortlistApplication(Long id){
+        Application application = this.getById(id);
+        application.setStatus(Enum.ApplicationStatus.SHORTLISTED);
+
+        mailService.sendMail(new NotificationEmail("Your Application have been approved",
+                application.getCandidate().getEmail(), application.getCandidate().getFullName(),
+                "Your Application have been approved! Please check your application status. Link: " +
+                        "http://localhost:4200/application/details/" + application.getApplicationId()));
+
+        return repo.save(application);
+    }
+
+    @Override
+    public Application declineApplication(Long id){
+        Application application = this.getById(id);
+        application.setStatus(Enum.ApplicationStatus.DECLINED);
+
+        mailService.sendMail(new NotificationEmail("Your Application have been approved",
+                application.getCandidate().getEmail(), application.getCandidate().getFullName(),
+                "Your Application have been rejected! Please check your application status. Link: " +
+                        "http://localhost:4200/application/details/" + application.getApplicationId()));
+
+        return repo.save(application);
     }
 
 }

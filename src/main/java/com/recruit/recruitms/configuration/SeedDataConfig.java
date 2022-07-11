@@ -75,9 +75,9 @@ public class SeedDataConfig {
                     ),
                     new User(
                             "Ng Pin Yuan",
-                            "pinyuan13225@mail.com",
-                            "npy",
-                            passwordEncoder.encode("111111"),
+                            "tp055117@mail.apu.edu.my",
+                            "pyuan",
+                            passwordEncoder.encode("055117"),
                             Enum.Role.CANDIDATE,
                             LocalDate.of(2000,Month.JULY,7),
                             Enum.Gender.MALE
@@ -146,17 +146,17 @@ public class SeedDataConfig {
 
 //            if(vacancyRepository.findAll().isEmpty()) vacancyRepository.save(vacancy);
 
-            Resume resume = new Resume(
-                    "photo2_admin_202207061210.jpg",
-                    userRepository.findByUsername("npy").get(),
-                    tags,
-                    countryRepository.findByCode("MY").get(),
-                    2,
-                    4000f,
-                    "Gradute soon",
-                    "CV_npy_202207061153.pdf",
-                    Enum.ObjectState.ACTIVE
-            );
+//            Resume resume = new Resume(
+//                    "photo2_admin_202207061210.jpg",
+//                    userRepository.findByUsername("npy").get(),
+//                    tags,
+//                    countryRepository.findByCode("MY").get(),
+//                    2,
+//                    4000f,
+//                    "Gradute soon",
+//                    "CV_npy_202207061153.pdf",
+//                    Enum.ObjectState.ACTIVE
+//            );
 //            if(resumeRepository.findAll().isEmpty()) resumeRepository.save(resume);
 
         };
