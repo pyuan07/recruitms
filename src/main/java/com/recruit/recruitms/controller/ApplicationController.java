@@ -27,13 +27,18 @@ public class ApplicationController {
     }
 
     @GetMapping("/objectState/{objectState}")
-    public ResponseEntity<List<Application>> getApplicationsByObjectState(@PathVariable String objectState){
+    public ResponseEntity<List<Application>> getApplicationsByObjectState(@PathVariable("objectState") String objectState){
         return ResponseEntity.ok(_applicationService.getByObjectState(Enum.ObjectState.valueOf(objectState)));
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Application>> getApplicationsByStatus(@PathVariable String status){
+    public ResponseEntity<List<Application>> getApplicationsByStatus(@PathVariable("status") String status){
         return ResponseEntity.ok(_applicationService.getByStatus(Enum.ApplicationStatus.valueOf(status)));
+    }
+
+    @GetMapping("/vacancy/{id}")
+    public ResponseEntity<List<Application>> getApplicationByVacancyId(@PathVariable("id") Long id){
+        return ResponseEntity.ok(_applicationService.getApplicationByVacancyId(id));
     }
 
     @GetMapping(path="/id/{id}")

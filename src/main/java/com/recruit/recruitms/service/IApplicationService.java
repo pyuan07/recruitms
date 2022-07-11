@@ -8,6 +8,7 @@ import java.util.List;
 public interface IApplicationService{
 
     List<Application> getByStatus(Enum.ApplicationStatus status);
+    public List<Application> getApplicationByVacancyId(Long vacancyId);
     Application shortlistApplication(Long id);
     Application declineApplication(Long id);
 }

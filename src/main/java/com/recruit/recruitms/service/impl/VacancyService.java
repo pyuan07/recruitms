@@ -3,7 +3,7 @@ package com.recruit.recruitms.service.impl;
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.dto.request.CreateVacancyRequest;
 import com.recruit.recruitms.dto.request.VacancyDto;
-import com.recruit.recruitms.entity.Organization;
+import com.recruit.recruitms.entity.Application;
 import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.entity.Vacancy;
 import com.recruit.recruitms.enumeration.Enum;
@@ -24,6 +24,8 @@ public class VacancyService implements ICrudService<Vacancy, Long>, IVacancyServ
     private final TagService _tagService;
     private final CountryService _countryService;
     private final OrganizationService _organizationService;
+
+    private final ApplicationService _applicationService;
 
     @Override
     public Vacancy create(Vacancy vacancy) {
@@ -117,6 +119,12 @@ public class VacancyService implements ICrudService<Vacancy, Long>, IVacancyServ
         Vacancy vacancy = repo.findById(id).orElseThrow(()-> new ApiRequestException(Constants.NOT_FOUND + " id: "+ id));
         vacancy.setObjectState(Enum.ObjectState.TERMINATED);
         repo.save(vacancy);
+
+        for(Application application : _applicationService.getApplicationByVacancyId(id)){
+            application.setStatus(Enum.ApplicationStatus.CANCEL);
+            _applicationService.update(application);
+        }
+
         return true;
     }
 

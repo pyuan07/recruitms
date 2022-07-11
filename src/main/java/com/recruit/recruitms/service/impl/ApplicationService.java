@@ -47,6 +47,11 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
     }
 
     @Override
+    public List<Application> getApplicationByVacancyId(Long vacancyId){
+        return this.getAll().stream().filter(x->x.getVacancy().getVacancyId().equals(vacancyId)).toList();
+    }
+
+    @Override
     public Application update(Application application){
         return repo.save(application);
     }
@@ -88,8 +93,9 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
 
         mailService.sendMail(new NotificationEmail("Your Application have been approved",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Your Application have been approved! Please check your application status. Link: " +
-                        "http://localhost:4200/application/details/" + application.getApplicationId()));
+                "Your Application have been approved! Please check your application status.\n " +
+                        "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
+                        "\n\n Link: " + "http://localhost:4200/application/details/" + application.getApplicationId()));
 
         return repo.save(application);
     }
@@ -101,10 +107,10 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
 
         mailService.sendMail(new NotificationEmail("Your Application have been approved",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Your Application have been rejected! Please check your application status. Link: " +
-                        "http://localhost:4200/application/details/" + application.getApplicationId()));
+                "Your Application have been approved! Please check your application status.\n " +
+                        "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
+                        "\n\n Link: " + "http://localhost:4200/application/details/" + application.getApplicationId()));
 
         return repo.save(application);
     }
-
 }

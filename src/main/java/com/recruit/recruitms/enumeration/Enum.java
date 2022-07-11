@@ -36,4 +36,9 @@ public class Enum {
         Resume,
         Vacancy
     }
+
+    public enum InterviewApproach {
+        ONLINE,
+        FACE_TO_FACE
+    }
 }
