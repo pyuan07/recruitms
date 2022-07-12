@@ -49,7 +49,6 @@ public class VacancyDto{
                 this.getNumberOfOpening(),
                 this.getMinSalary(),
                 this.getMaxSalary(),
-                this.getEnableQuiz(),
                 this.getRemarks()
         );
 

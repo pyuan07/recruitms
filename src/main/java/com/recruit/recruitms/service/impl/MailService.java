@@ -36,6 +36,8 @@ public class MailService {
             final Context ctx = new Context();
             ctx.setVariable("name", notificationEmail.getRecipient());
             ctx.setVariable("message", notificationEmail.getBody());
+            ctx.setVariable("details", notificationEmail.getDetails());
+
 
             // Prepare message using a Spring helper
             final MimeMessage mimeMessage = this.mailSender.createMimeMessage();

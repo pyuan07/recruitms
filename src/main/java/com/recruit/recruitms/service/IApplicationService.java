@@ -11,4 +11,6 @@ public interface IApplicationService{
     public List<Application> getApplicationByVacancyId(Long vacancyId);
     Application shortlistApplication(Long id);
     Application declineApplication(Long id);
+
+    Application acceptApplication(Long id);
 }

@@ -93,9 +93,9 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
 
         mailService.sendMail(new NotificationEmail("Your Application have been approved",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Your Application have been approved! Please check your application status.\n " +
+                "Your Application have been approved! Please check your application status.",
                         "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
-                        "\n\n Link: " + "http://localhost:4200/application/details/" + application.getApplicationId()));
+                        "\n\n ;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
 
         return repo.save(application);
     }
@@ -107,9 +107,23 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
 
         mailService.sendMail(new NotificationEmail("Your Application have been approved",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Your Application have been approved! Please check your application status.\n " +
+                "Your Application have been approved! Please check your application status.",
                         "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
-                        "\n\n Link: " + "http://localhost:4200/application/details/" + application.getApplicationId()));
+                        "\n\n ;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
+
+        return repo.save(application);
+    }
+
+    @Override
+    public Application acceptApplication(Long id) {
+        Application application = this.getById(id);
+        application.setStatus(Enum.ApplicationStatus.DECLINED);
+
+        mailService.sendMail(new NotificationEmail("Your Application have been approved",
+                application.getCandidate().getEmail(), application.getCandidate().getFullName(),
+                "Congratulations! Your Application have been completed! Please contact with the employer to follow up.",
+                        "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
+                        "\n;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
 
         return repo.save(application);
     }

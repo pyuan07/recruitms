@@ -70,4 +70,9 @@ public class ApplicationController {
     public ResponseEntity<Application> declineApplication(@PathVariable("id") Long id){
         return ResponseEntity.ok(_applicationService.declineApplication(id));
     }
+
+    @GetMapping(path="/complete/{id}")
+    public ResponseEntity<Application> acceptApplication(@PathVariable("id") Long id){
+        return ResponseEntity.ok(_applicationService.acceptApplication(id));
+    }
 }

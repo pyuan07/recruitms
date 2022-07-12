@@ -1,12 +1,9 @@
 package com.recruit.recruitms.configuration;
 
-import com.recruit.recruitms.dto.request.CreateVacancyRequest;
 import com.recruit.recruitms.entity.*;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.repository.*;
-import com.recruit.recruitms.service.impl.VacancyService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -96,7 +93,7 @@ public class SeedDataConfig {
                     new Tag("Foundation", Enum.TagType.Vacancy,0L),
                     new Tag("Cyber Security", Enum.TagType.Vacancy,0L)
                 );
-            if(tagRepository.findAll().isEmpty()) tagRepository.saveAll(tags);
+//            if(tagRepository.findAll().isEmpty()) tagRepository.saveAll(tags);
 
             //COUNTRY
             List<Country> countries = new ArrayList<>();
@@ -139,7 +136,6 @@ public class SeedDataConfig {
                     30,
                     3000f,
                     5000f,
-                    false,
                     "First come First serve",
                     Enum.ObjectState.ACTIVE
             );

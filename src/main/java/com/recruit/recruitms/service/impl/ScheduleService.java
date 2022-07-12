@@ -58,7 +58,8 @@ public class ScheduleService implements ICrudService<Schedule, Long>, IScheduleS
     @Override
     public boolean delete(Long id) {
         if(! repo.existsById(id)) throw new ApiRequestException(Constants.NOT_FOUND + " id: "+id);
-        this.delete(id);
+        //this.delete(id);
+        this.terminate(id);
         return true;
     }
 

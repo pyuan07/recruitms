@@ -12,4 +12,6 @@ public class NotificationEmail {
     private String recipientEmail;
     private String recipient;
     private String body;
+    private String details;
+
 }

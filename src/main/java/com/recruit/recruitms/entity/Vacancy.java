@@ -49,7 +49,7 @@ public class Vacancy extends Auditable<String> implements Serializable {
 
     private Float maxSalary;
 
-    private Boolean enableQuiz;
+//    private Boolean enableQuiz;
 
     private String remarks;
 
@@ -61,7 +61,7 @@ public class Vacancy extends Auditable<String> implements Serializable {
                    Integer numberOfOpening,
                    Float minSalary,
                    Float maxSalary,
-                   Boolean enableQuiz,
+//                   Boolean enableQuiz,
                    String remarks,
                    Enum.ObjectState objectState) {
         this.name = name;
@@ -72,7 +72,7 @@ public class Vacancy extends Auditable<String> implements Serializable {
         this.numberOfOpening = numberOfOpening;
         this.minSalary = minSalary;
         this.maxSalary = maxSalary;
-        this.enableQuiz = enableQuiz;
+//        this.enableQuiz = enableQuiz;
         this.remarks = remarks;
         super.setObjectState(objectState);
     }

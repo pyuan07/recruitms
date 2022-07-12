@@ -59,7 +59,7 @@ public class AuthService {
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), user.getFullName(),"Thank you for signing up to RecruIT Management System, " +
                 "please click on the below url to activate your account : " +
-                "http://localhost:055117/api/auth/accountVerification/" + token));
+                "http://localhost:055117/api/auth/accountVerification/" + token,""));
     }
 
     public void resendVerificationEmail(String email) {
@@ -68,7 +68,7 @@ public class AuthService {
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), user.getFullName() ,"Thank you for signing up to RecruIT Management System, " +
                 "please click on the below url to activate your account : " +
-                "http://localhost:055117/api/auth/accountVerification/" + token.getToken()));
+                "http://localhost:055117/api/auth/accountVerification/" + token.getToken(),""));
     }
 
     //@Transactional(readOnly = true)
