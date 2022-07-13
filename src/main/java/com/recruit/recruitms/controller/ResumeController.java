@@ -4,6 +4,7 @@ import com.recruit.recruitms.dto.request.CreateResumeRequest;
 import com.recruit.recruitms.dto.request.ResumeDto;
 import com.recruit.recruitms.dto.response.UploadResponse;
 import com.recruit.recruitms.entity.Resume;
+import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.service.impl.ResumeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,5 +107,10 @@ public class ResumeController {
 
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
                 .headers(httpHeaders).body(resource);
+    }
+
+    @GetMapping("extract/pdf/{filename}")
+    public ResponseEntity<List<Tag>> extractTagsFromResume(@PathVariable("filename") String filename) throws IOException {
+        return ResponseEntity.ok(_resumeService.extractTagsFromResume(filename));
     }
 }

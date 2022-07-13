@@ -2,6 +2,7 @@ package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.dto.request.CreateResumeRequest;
+import com.recruit.recruitms.dto.request.ExtractTagsRequest;
 import com.recruit.recruitms.dto.request.ResumeDto;
 import com.recruit.recruitms.entity.Resume;
 import com.recruit.recruitms.entity.Tag;
@@ -12,9 +13,15 @@ import com.recruit.recruitms.security.auditable.AuditorAware;
 import com.recruit.recruitms.service.ICrudService;
 import com.recruit.recruitms.service.IResumeService;
 import lombok.AllArgsConstructor;
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.io.RandomAccessFile;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -127,7 +134,7 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
 
     @Override
     public String uploadResumePdf(MultipartFile file) throws IOException {
-        Date date = new Date() ;
+        Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm") ;
 
         AuditorAware audit = new AuditorAware();
@@ -211,5 +218,24 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
 
         resume.setTags(selectedTags);
         return this.update(resume.mapToEntity());
+    }
+
+    @Override
+    public List<Tag> extractTagsFromResume(String fileName) throws IOException {
+
+        Path fileStorage = Paths.get(PDF_DIRECTORY,fileName);
+
+        File f = new File(String.valueOf(fileStorage));
+
+        String parsedText;
+        PDFParser parser = new PDFParser(new RandomAccessFile(f, "r"));
+        parser.parse();
+
+        COSDocument cosDoc = parser.getDocument();
+        PDFTextStripper pdfStripper = new PDFTextStripper();
+        PDDocument pdDoc = new PDDocument(cosDoc);
+        parsedText = pdfStripper.getText(pdDoc);
+
+        return _tagService.extractTagFromString(new ExtractTagsRequest(parsedText));
     }
 }
