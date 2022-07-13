@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -117,7 +118,7 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
     @Override
     public Application acceptApplication(Long id) {
         Application application = this.getById(id);
-        application.setStatus(Enum.ApplicationStatus.DECLINED);
+        application.setStatus(Enum.ApplicationStatus.COMPLETED);
 
         mailService.sendMail(new NotificationEmail("Your Application have been approved",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
@@ -126,5 +127,10 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
                         "\n;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
 
         return repo.save(application);
+    }
+
+    @Override
+    public List<Application> getApplicationByCandidateId(UUID id) {
+        return this.getByObjectState(Enum.ObjectState.ACTIVE).stream().filter(x -> x.getCandidate().getUserId().equals(id)).toList();
     }
 }

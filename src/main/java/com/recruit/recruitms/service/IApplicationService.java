@@ -4,6 +4,7 @@ import com.recruit.recruitms.entity.Application;
 import com.recruit.recruitms.enumeration.Enum;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IApplicationService{
 
@@ -13,4 +14,6 @@ public interface IApplicationService{
     Application declineApplication(Long id);
 
     Application acceptApplication(Long id);
+
+    List<Application> getApplicationByCandidateId(UUID id);
 }

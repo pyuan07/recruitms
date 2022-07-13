@@ -77,7 +77,7 @@ public class UserService implements ICrudService<User,UUID>, IUserService {
 
     public User update(User user){
         //Encode Password
-        if(user.getPassword().equals(this.getById(user.getUserId()).getPassword())){
+        if(!user.getPassword().equals(this.getById(user.getUserId()).getPassword())){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepo.save(user);

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path="api/v1/application")
@@ -39,6 +40,11 @@ public class ApplicationController {
     @GetMapping("/vacancy/{id}")
     public ResponseEntity<List<Application>> getApplicationByVacancyId(@PathVariable("id") Long id){
         return ResponseEntity.ok(_applicationService.getApplicationByVacancyId(id));
+    }
+
+    @GetMapping("/candidate/{id}")
+    public ResponseEntity<List<Application>> getApplicationByCandidateId(@PathVariable("id") UUID id){
+        return ResponseEntity.ok(_applicationService.getApplicationByCandidateId(id));
     }
 
     @GetMapping(path="/id/{id}")
@@ -75,4 +81,5 @@ public class ApplicationController {
     public ResponseEntity<Application> acceptApplication(@PathVariable("id") Long id){
         return ResponseEntity.ok(_applicationService.acceptApplication(id));
     }
+
 }
