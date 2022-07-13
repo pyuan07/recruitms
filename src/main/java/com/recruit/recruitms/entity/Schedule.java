@@ -31,6 +31,7 @@ public class Schedule extends Auditable<String> implements Serializable {
 
     private String meetingUrl;
 
+    @Lob
     @Column
     private String remarks;
 

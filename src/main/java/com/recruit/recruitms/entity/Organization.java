@@ -32,6 +32,7 @@ public class Organization extends Auditable<String> implements Serializable {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Lob
     @NotBlank(message = "Organization's Description is required")
     @Column(nullable = false)
     private String description;

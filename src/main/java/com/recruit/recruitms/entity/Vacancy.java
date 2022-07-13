@@ -24,6 +24,7 @@ public class Vacancy extends Auditable<String> implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @Lob
     @NotBlank(message = "Vacancy's Description is required")
     @Column(nullable = false)
     private String description;
@@ -51,6 +52,7 @@ public class Vacancy extends Auditable<String> implements Serializable {
 
 //    private Boolean enableQuiz;
 
+    @Lob
     private String remarks;
 
     public Vacancy(String name,

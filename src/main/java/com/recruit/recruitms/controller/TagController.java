@@ -1,5 +1,6 @@
 package com.recruit.recruitms.controller;
 
+import com.recruit.recruitms.dto.request.ExtractTagsRequest;
 import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.service.impl.TagService;
@@ -49,6 +50,12 @@ public class TagController {
     @DeleteMapping(path="{id}")
     public boolean deleteTag(@PathVariable("id") Long id){
         return _tagService.delete(id);
+    }
+
+
+    @PostMapping("extract")
+    public ResponseEntity<List<Tag>> extractTagFromString(@RequestBody ExtractTagsRequest request){
+        return ResponseEntity.ok(_tagService.extractTagFromString(request));
     }
 
 }

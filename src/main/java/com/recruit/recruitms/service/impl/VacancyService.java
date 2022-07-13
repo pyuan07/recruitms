@@ -131,9 +131,7 @@ public class VacancyService implements ICrudService<Vacancy, Long>, IVacancyServ
                     "Sorry! The vacancy you applied have been terminated! Therefore, your Application have been cancelled! Please contact with the employer to follow up.",
                     "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
                             "\n;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
-
         }
-
         return true;
     }
 

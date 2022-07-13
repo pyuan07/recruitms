@@ -53,6 +53,7 @@ public class Resume extends Auditable<String> implements Serializable {
     @Column
     private Float salaryExpectation;
 
+    @Lob
     @Column
     private String remarks;
 
