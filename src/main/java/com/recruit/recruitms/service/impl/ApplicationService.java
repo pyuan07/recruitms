@@ -2,8 +2,7 @@ package com.recruit.recruitms.service.impl;
 
 import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.entity.Application;
-import com.recruit.recruitms.entity.NotificationEmail;
-import com.recruit.recruitms.entity.Tag;
+import com.recruit.recruitms.dto.NotificationEmail;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
 import com.recruit.recruitms.repository.ApplicationRepository;

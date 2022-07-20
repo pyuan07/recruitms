@@ -4,7 +4,7 @@ import com.recruit.recruitms.constant.Constants;
 import com.recruit.recruitms.dto.request.CreateVacancyRequest;
 import com.recruit.recruitms.dto.request.VacancyDto;
 import com.recruit.recruitms.entity.Application;
-import com.recruit.recruitms.entity.NotificationEmail;
+import com.recruit.recruitms.dto.NotificationEmail;
 import com.recruit.recruitms.entity.Tag;
 import com.recruit.recruitms.entity.Vacancy;
 import com.recruit.recruitms.enumeration.Enum;

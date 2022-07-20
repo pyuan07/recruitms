@@ -3,18 +3,16 @@ package com.recruit.recruitms.security.services;
 import com.recruit.recruitms.dto.request.LoginRequest;
 import com.recruit.recruitms.dto.request.RegisterRequest;
 import com.recruit.recruitms.dto.response.AuthenticationResponse;
-import com.recruit.recruitms.entity.NotificationEmail;
+import com.recruit.recruitms.dto.NotificationEmail;
 import com.recruit.recruitms.entity.User;
 import com.recruit.recruitms.entity.VerificationToken;
 import com.recruit.recruitms.enumeration.Enum;
 import com.recruit.recruitms.exception.ApiRequestException;
-import com.recruit.recruitms.repository.VerificationTokenRepository;
 import com.recruit.recruitms.security.jwt.JwtProvider;
 import com.recruit.recruitms.service.impl.MailService;
 import com.recruit.recruitms.service.impl.UserService;
 import com.recruit.recruitms.service.impl.VerificationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +23,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,6 +53,8 @@ public class AuthService {
         userService.create(user);
 
         String token = generateVerificationToken(user);
+
+
         mailService.sendMail(new NotificationEmail("Please Activate your Account",
                 user.getEmail(), user.getFullName(),"Thank you for signing up to RecruIT Management System, " +
                 "please click on the below url to activate your account : " +
@@ -87,9 +86,8 @@ public class AuthService {
 
     private String generateVerificationToken(User user) {
         String token = UUID.randomUUID().toString();
-        VerificationToken verificationToken = new VerificationToken();
-        verificationToken.setToken(token);
-        verificationToken.setUser(user);
+        VerificationToken verificationToken
+                = new VerificationToken(token,user);
 
         verificationTokenService.create(verificationToken);
         return token;

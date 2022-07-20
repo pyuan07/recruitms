@@ -63,6 +63,7 @@ public class TagService implements ICrudService<Tag, Long>, ITagService {
     @Override
     public List<Tag> extractTagFromString(ExtractTagsRequest request) {
         List<Tag> tagsFound = new ArrayList<>();
+
         //Tokenizers
         SimpleTokenizer simpleTokenizer = SimpleTokenizer.INSTANCE;
         String[] rawTermArray = simpleTokenizer.tokenize(request.getRaw());
@@ -70,19 +71,28 @@ public class TagService implements ICrudService<Tag, Long>, ITagService {
 
         //1st search for single words
         for (String term : rawTermArray) {
-            Optional<Tag> foundTag = allTags.stream().filter(x->x.getName().toLowerCase().equals(term.toLowerCase())).findFirst();
-            if(foundTag.isPresent() && tagsFound.stream().noneMatch(x->x.getTagId().equals(foundTag.get().getTagId()))){
+            Optional<Tag> foundTag =
+                    allTags.stream()
+                            .filter(x-> x.getName().equalsIgnoreCase(term))
+                            .findFirst();
+            if( foundTag.isPresent() &&
+                    tagsFound.stream().noneMatch(x->x.getTagId().equals(foundTag.get().getTagId()))
+            ){
                 tagsFound.add(foundTag.get());
-                log.info(term);
             }
         }
 
         //2nd for those tag with space and symbol
         Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-        List<Tag> recheckTag = allTags.stream().filter(x-> p.matcher(x.getName()).find() || x.getName().contains(" ")).toList();
+        List<Tag> recheckTag =
+                allTags.stream()
+                        .filter(x-> p.matcher(x.getName()).find() || x.getName().contains(" "))
+                        .toList();
         recheckTag.forEach( tag -> {
             Pattern tagPattern = Pattern.compile(".*"+ tag.getName() +".*", Pattern.CASE_INSENSITIVE);
-            if(tagPattern.matcher(request.getRaw()).find() && tagsFound.stream().noneMatch(x->x.getTagId().equals(tag.getTagId()))){
+            if(tagPattern.matcher(request.getRaw()).find() &&
+                    tagsFound.stream().noneMatch(x->x.getTagId().equals(tag.getTagId()))
+            ){
                 tagsFound.add(tag);
             }
         });

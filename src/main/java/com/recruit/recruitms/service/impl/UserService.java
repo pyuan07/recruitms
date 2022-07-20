@@ -35,11 +35,6 @@ public class UserService implements ICrudService<User,UUID>, IUserService {
         //Encode Password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        //switch (user.getRoles()){
-//            case STAFF -> staffRepo.save(new Staff(newUser.getUserId(),newUser));
-//            case EMPLOYER -> employerRepo.save(new Employer(newUser.getUserId(),newUser));
-//            case CANDIDATE -> candidateRepo.save(new Candidate(newUser.getUserId(),newUser));
-//        }
         return userRepo.save(user);
     }
 
