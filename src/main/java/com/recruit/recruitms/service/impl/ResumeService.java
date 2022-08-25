@@ -43,8 +43,8 @@ public class ResumeService implements ICrudService<Resume, UUID>, IResumeService
     private final UserService _userService;
     private final TagService _tagService;
 
-    public static final String PDF_DIRECTORY = "D:\\User's File\\Downloads\\uploads\\resume";
-    public static final String IMAGE_DIRECTORY = "D:\\User's File\\Downloads\\uploads\\profilePicture";
+    public static final String PDF_DIRECTORY = System.getProperty("user.dir") + "\\storage\\uploads\\resume";
+    public static final String IMAGE_DIRECTORY = System.getProperty("user.dir") + "\\storage\\uploads\\profilePicture";
 
 
 

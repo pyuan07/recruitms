@@ -91,9 +91,9 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
         Application application = this.getById(id);
         application.setStatus(Enum.ApplicationStatus.SHORTLISTED);
 
-        mailService.sendMail(new NotificationEmail("Your Application have been approved",
+        mailService.sendMail(new NotificationEmail("Your Application have been SHORTLISTED",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Your Application have been approved! Please check your application status.",
+                "Your Application have been SHORTLISTED! Please check your application status.",
                         "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
                         "\n\n ;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
 
@@ -105,9 +105,9 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
         Application application = this.getById(id);
         application.setStatus(Enum.ApplicationStatus.DECLINED);
 
-        mailService.sendMail(new NotificationEmail("Your Application have been approved",
+        mailService.sendMail(new NotificationEmail("Your Application have been DECLINED",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Your Application have been approved! Please check your application status.",
+                "Your Application have been DECLINED! Please check your application status.",
                         "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
                         "\n\n ;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
 
@@ -119,9 +119,9 @@ public class ApplicationService implements ICrudService<Application, Long>, IApp
         Application application = this.getById(id);
         application.setStatus(Enum.ApplicationStatus.COMPLETED);
 
-        mailService.sendMail(new NotificationEmail("Your Application have been approved",
+        mailService.sendMail(new NotificationEmail("Your Application have been APPROVED",
                 application.getCandidate().getEmail(), application.getCandidate().getFullName(),
-                "Congratulations! Your Application have been completed! Please contact with the employer to follow up.",
+                "Congratulations! Your Application have been APPROVED! Please contact with the employer to follow up.",
                         "Vacancy: "+ application.getVacancy().getName() + " from " + application.getVacancy().getOrganization().getName() +
                         "\n;Employer Email: "+ application.getVacancy().getOrganization().getOwner().getEmail()));
 

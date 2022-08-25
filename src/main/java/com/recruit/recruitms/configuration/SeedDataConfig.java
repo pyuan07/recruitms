@@ -50,6 +50,41 @@ public class SeedDataConfig {
             }
             if(countryRepository.findAll().isEmpty())  countryRepository.saveAll(countries);
 
+            List<User> users = List.of(
+                    new User(
+                            "admin",
+                            "admin@mail.com",
+                            "admin",
+                            passwordEncoder.encode("admin123"),
+                            Enum.Role.ADMIN,
+                            LocalDate.of(2000,Month.AUGUST,10),
+                            Enum.Gender.MALE
+                    )
+            );
+
+            users.forEach(x->x.setObjectState(Enum.ObjectState.ACTIVE));
+            if(userRepository.findAll().isEmpty()) userRepository.saveAll(users);
+
+            //TAG
+            List<Tag> tags = List.of(
+                    new Tag("Software Engineer", Enum.TagType.Vacancy, 0L),
+                    new Tag("Internship", Enum.TagType.Vacancy,0L),
+                    new Tag("Fresh Graduate", Enum.TagType.Vacancy,0L),
+                    new Tag("Master", Enum.TagType.Vacancy,0L),
+                    new Tag("Degree", Enum.TagType.Vacancy,0L),
+                    new Tag("Foundation", Enum.TagType.Vacancy,0L),
+                    new Tag("Cyber Security", Enum.TagType.Vacancy,0L),
+                    new Tag("C#", Enum.TagType.Vacancy, 0L),
+                    new Tag("Java", Enum.TagType.Vacancy, 0L),
+                    new Tag("Spring Boot", Enum.TagType.Vacancy, 0L),
+                    new Tag("Angular", Enum.TagType.Vacancy, 0L),
+                    new Tag("HTML", Enum.TagType.Vacancy, 0L),
+                    new Tag("CSS", Enum.TagType.Vacancy, 0L),
+                    new Tag("JavaScript", Enum.TagType.Vacancy, 0L),
+                    new Tag("ASP.Net", Enum.TagType.Vacancy, 0L)
+                    );
+            if(tagRepository.findAll().isEmpty()) tagRepository.saveAll(tags);
+
 //            List<User> users = List.of(
 //                    new User(
 //                            "admin",
